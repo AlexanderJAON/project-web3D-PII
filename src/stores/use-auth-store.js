@@ -1,4 +1,5 @@
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from "firebase/auth";
+import { auth } from "../../firebase.config";
 import { create } from "zustand";
 
 const provider = new GoogleAuthProvider();
@@ -32,7 +33,8 @@ const useAuthStore = create((set)=> ({
                 set({user:null, loading:false});
             }
         });
-    }
+      }
+    
 
 }));
 
