@@ -1,0 +1,27 @@
+.container-login {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 10px 20px; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    border-bottom: 1px solid #000000; 
+  }
+  
+  .welcome-text {
+    font-size: 20px; 
+    color: #333;
+  }
+  
+  .button-login, .button-logout {
+    background-color: #f44336; 
+    color: white;
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    
+  }
+  
