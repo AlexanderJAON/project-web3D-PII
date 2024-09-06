@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { useGLTF } from "@react-three/drei";
 
+
 const Moon = forwardRef((props, ref) => {
   const { nodes } = useGLTF("models-3d/moon.glb");
 
@@ -11,11 +12,17 @@ const Moon = forwardRef((props, ref) => {
           name="Mball002"
           geometry={nodes.Mball002.geometry}
           material={nodes.Mball002.material}
-          position={[2.777, 2.131, 0]}
-          scale={[0.066, 0.341, 0.161]}
-        />
-      </group>
-    </group>
+          position={[0, 0, 0]}
+          scale={[1, 1, 1]}
+          />
+          <mesh >
+            <boxGeometry args={[2,2,0.1]}/>
+            <meshStandardMaterial color={"gray"}/>
+            
+          </mesh>
+         
+     </group>
+   </group>
   );
 });
 
