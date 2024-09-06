@@ -1,3 +1,4 @@
+import React, { forwardRef } from 'react';
 import { useGLTF } from "@react-three/drei";
 
 
@@ -17,10 +18,10 @@ const Moon = (props) => {
           position={[2.777, 2.131, 0]}
           scale={[0.066, 0.341, 0.161]} 
           />
-          
-        
-      </group>
-    </group>
+            
+         
+     </group>
+   </group>
   );
 };
 export default Moon;

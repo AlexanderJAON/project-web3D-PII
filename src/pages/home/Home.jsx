@@ -7,9 +7,9 @@ const Home = () => {
     const { user, logout } =
     useAuthStore();
 
-    const handleLogout = useCallback(() => {
-        logout();
-      }, [logout]);
+  const handleLogout = useCallback(() => {
+    logout();
+  }, [logout]);
 
     
     return(
@@ -20,7 +20,7 @@ const Home = () => {
           </button>
          <div className="container">
           
-       <Canvas>
+         <Canvas>
        <directionalLight intensity={5} position={[-5, 5, -5]} />
        <directionalLight intensity={2} position={[0, -5, 0]} />
 
@@ -29,7 +29,7 @@ const Home = () => {
           <directionalLight position={[10, 10, 10]} intensity={5} />
           <OrbitControls />
           <Moon />
-          
+           
         </Canvas> 
          </div>
        
