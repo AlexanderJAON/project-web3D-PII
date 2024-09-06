@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import useAuthStore from "../../stores/use-auth-store";
-
+import { Canvas } from "@react-three/fiber";
+import Moon from "./models/Moon";
 const Home = () => {
     const { user, logout } =
     useAuthStore();
@@ -16,7 +17,13 @@ const Home = () => {
           <button className="button-logout" onClick={handleLogout}>
             Cerrar Sesión
           </button>
+         
+        <Canvas>
+          <Moon /> 
+        </Canvas> 
+        
         </>
+        
     )
 }
 
