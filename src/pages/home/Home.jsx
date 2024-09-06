@@ -11,6 +11,20 @@ const Home = () => {
     logout();
   }, [logout]);
 
+  function CosineAnimation() {
+    const ref = useRef();
+    const frequency =4;
+
+    useFrame(({ clock }) => {
+      const time = clock.getElapsedTime();
+      if (ref.current) {
+        ref.current.position.y = Math.cos(frequency * time);
+      }
+    });
+
+    return <Moon ref={ref} />;
+  }
+
     
     return(
         <>
@@ -23,7 +37,7 @@ const Home = () => {
         <ambientLight intensity={1.5} />
         <directionalLight position={[0, 10, 10]} intensity={5} />
         <OrbitControls />
-          <Moon />
+          <CosineAnimation />
            
         </Canvas> 
          </div>
