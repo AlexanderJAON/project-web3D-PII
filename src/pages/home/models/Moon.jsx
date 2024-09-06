@@ -12,8 +12,8 @@ const Moon = forwardRef((props, ref) => {
           name="Mball002"
           geometry={nodes.Mball002.geometry}
           material={nodes.Mball002.material}
-          position={[0, 0, 0]}
-          scale={[1, 1, 1]}
+          position={[2.777, 2.131, 0]}
+          scale={[0.066, 0.341, 0.161]}
           />
           <mesh >
             <boxGeometry args={[2,2,0.1]}/>
