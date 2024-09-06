@@ -1,13 +1,11 @@
+import React, { forwardRef } from 'react';
 import { useGLTF } from "@react-three/drei";
 
-
-
-const Moon = (props) => {
- const {nodes, materials } = useGLTF ("models-3d/moon.glb");
-
+const Moon = forwardRef((props, ref) => {
+  const { nodes } = useGLTF("models-3d/moon.glb");
 
   return (
-    <group {...props} dispose={null}>
+    <group ref={ref} {...props} dispose={null}>
       <group name="Scene">
         <mesh
           name="Mball002"
@@ -19,6 +17,8 @@ const Moon = (props) => {
       </group>
     </group>
   );
-};
+});
+
 export default Moon;
+
 useGLTF.preload("models-3d/moon.glb");
