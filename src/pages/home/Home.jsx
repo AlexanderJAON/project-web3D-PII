@@ -1,8 +1,11 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import useAuthStore from "../../stores/use-auth-store";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Moon from "./models/Moon";
 import { OrbitControls } from "@react-three/drei";
+import { getDocs, query, where } from "firebase/firestore";
+import UserDAO from "../../daos/UserDAO";
+
 
 const Home = () => {
   const { user, logout } = useAuthStore();
@@ -10,6 +13,25 @@ const Home = () => {
   const handleLogout = useCallback(() => {
     logout();
   }, [logout]);
+
+  useEffect( ()  => {
+    const getEmail = async () => {
+      const queryEmail = query(UserDAO.collectionRef, where("email", "==", user.email));
+      const email =  await getDocs(queryEmail);
+    
+    if (user && email.empty) {
+      
+      const newUser = {
+        email: user.email,
+        name: user.displayName,
+        photo: user.photoURL,
+      };
+      UserDAO.createUser(newUser);
+    }
+
+  }
+  getEmail()
+  }, [user]);
 
   function CosineAnimation() {
     const ref = useRef();
