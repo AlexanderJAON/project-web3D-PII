@@ -4,7 +4,8 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import Moon from "./models/Moon";
 import { OrbitControls } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
-import UserDao from "../../daos/UserDao";
+import UserDAO from "../../daos/UserDAO";
+
 
 const Home = () => {
   const { user, logout } = useAuthStore();
@@ -15,7 +16,7 @@ const Home = () => {
 
   useEffect( ()  => {
     const getEmail = async () => {
-      const queryEmail = query(UserDao.collectionRef, where("email", "==", user.email));
+      const queryEmail = query(UserDAO.collectionRef, where("email", "==", user.email));
       const email =  await getDocs(queryEmail);
     
     if (user && email.empty) {
@@ -25,7 +26,7 @@ const Home = () => {
         name: user.displayName,
         photo: user.photoURL,
       };
-      UserDao.createUser(newUser);
+      UserDAO.createUser(newUser);
     }
 
   }
