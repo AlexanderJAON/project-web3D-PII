@@ -15,11 +15,6 @@ const Moon = forwardRef((props, ref) => {
           position={[2.777, 2.131, 0]}
           scale={[0.066, 0.341, 0.161]}
           />
-          <mesh >
-            <boxGeometry args={[2,2,0.1]}/>
-            <meshStandardMaterial color={"gray"}/>
-            
-          </mesh>
          
      </group>
    </group>
