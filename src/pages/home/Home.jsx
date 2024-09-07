@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import useAuthStore from "../../stores/use-auth-store";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Moon from "./models/Moon";
-import { OrbitControls } from "@react-three/drei";
+import { PointerLockControls } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 
