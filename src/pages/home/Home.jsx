@@ -6,7 +6,6 @@ import { OrbitControls } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 
-
 const Home = () => {
   const { user, logout } = useAuthStore();
 
@@ -60,7 +59,7 @@ const Home = () => {
             <directionalLight intensity={2} position={[0, -5, 0]} />
             <ambientLight intensity={1.5} />
             <directionalLight position={[0, 10, 10]} intensity={5} />
-           <OrbitControls />
+           <PointerLockControls />
           <CosineAnimation />  
         </Canvas> 
          </div>
