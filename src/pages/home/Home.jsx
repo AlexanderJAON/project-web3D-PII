@@ -34,11 +34,12 @@ const Home = () => {
           </button>
          <div className="container">
          <Canvas>
-        <ambientLight intensity={1.5} />
-        <directionalLight position={[0, 10, 10]} intensity={5} />
-        <OrbitControls />
-          <CosineAnimation />
-           
+            <directionalLight intensity={5} position={[-5, 5, -5]} />
+            <directionalLight intensity={2} position={[0, -5, 0]} />
+            <ambientLight intensity={1.5} />
+            <directionalLight position={[0, 10, 10]} intensity={5} />
+           <OrbitControls />
+          <CosineAnimation />  
         </Canvas> 
          </div>
        
