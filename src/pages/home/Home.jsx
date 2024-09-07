@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from "react";
 import useAuthStore from "../../stores/use-auth-store";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Moon from "./models/Moon";
-import { OrbitControls } from "@react-three/drei";
+import { CameraControls, CameraShake, DragControls, FirstPersonControls, OrbitControls, OrthographicCamera, PivotControls, PointerLockControls } from "@react-three/drei";
 
 const Home = () => {
   const { user, logout } = useAuthStore();
@@ -38,7 +38,7 @@ const Home = () => {
             <directionalLight intensity={2} position={[0, -5, 0]} />
             <ambientLight intensity={1.5} />
             <directionalLight position={[0, 10, 10]} intensity={5} />
-           <OrbitControls />
+           <PointerLockControls />
           <CosineAnimation />  
         </Canvas> 
          </div>
