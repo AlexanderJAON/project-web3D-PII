@@ -5,6 +5,8 @@ import Moon from "./models/Moon";
 import { PointerLockControls } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
+import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
+
 
 const Home = () => {
   const { user, logout } = useAuthStore();
@@ -46,6 +48,8 @@ const Home = () => {
     return <Moon ref={ref} />;
   }
 
+  const audioRef = useRef();
+
     
     return(
         <>
@@ -60,6 +64,9 @@ const Home = () => {
             <ambientLight intensity={1.5} />
             <directionalLight position={[0, 10, 10]} intensity={5} />
            <PointerLockControls />
+           <group position={[0, 5, 0]}>
+            <PositionalAudio autoplay ref={audioRef} loop url="/sounds/cancion.mp3" />
+          </group>
           <CosineAnimation />  
         </Canvas> 
          </div>
