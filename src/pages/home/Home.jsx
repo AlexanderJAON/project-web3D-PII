@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useRef } from "react";
 import useAuthStore from "../../stores/use-auth-store";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Moon from "./models/Moon";
-import { OrbitControls } from "@react-three/drei";
+import { PointerLockControls } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
+import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
 
 
 const Home = () => {
@@ -47,6 +48,8 @@ const Home = () => {
     return <Moon ref={ref} />;
   }
 
+  const audioRef = useRef();
+
     
     return(
         <>
@@ -60,7 +63,10 @@ const Home = () => {
             <directionalLight intensity={2} position={[0, -5, 0]} />
             <ambientLight intensity={1.5} />
             <directionalLight position={[0, 10, 10]} intensity={5} />
-           <OrbitControls />
+           <PointerLockControls />
+           <group position={[0, 5, 0]}>
+            <PositionalAudio autoplay ref={audioRef} loop url="/sounds/cancion.mp3" />
+          </group>
           <CosineAnimation />  
         </Canvas> 
          </div>
