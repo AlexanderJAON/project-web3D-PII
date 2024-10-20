@@ -57,7 +57,7 @@ const Home = () => {
           <button className="button-logout" onClick={handleLogout}>
             Cerrar Sesión
           </button>
-         <div className="container">
+         <div className="container-home">
          <Canvas>
             <directionalLight intensity={5} position={[-5, 5, -5]} />
             <directionalLight intensity={2} position={[0, -5, 0]} />
