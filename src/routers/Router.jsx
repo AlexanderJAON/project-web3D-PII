@@ -3,6 +3,7 @@ import PublicRoute from "./PublicRoute";
 import Login from "../pages/login/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "../pages/home/Home";
+import Acidification from "../pages/acidification/Acidification";
 
 const Router = createBrowserRouter([
     {
@@ -16,6 +17,12 @@ const Router = createBrowserRouter([
         path:"/home",
         element: (
             <ProtectedRoute><Home/></ProtectedRoute>
+        )
+    },
+    {
+        path: "/acidification",
+        element: (
+            <ProtectedRoute><Acidification/></ProtectedRoute>
         )
     }
 ])
