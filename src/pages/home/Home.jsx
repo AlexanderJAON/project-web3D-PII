@@ -6,14 +6,20 @@ import { PointerLockControls } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
   const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
 
   const handleLogout = useCallback(() => {
     logout();
   }, [logout]);
+
+  const goToAcidification = () => {
+    navigate("/acidification");
+  };
 
   useEffect(() => {
     const getEmail = async () => {
@@ -58,6 +64,7 @@ const Home = () => {
         <button class="value">Acerca de nosotros</button>
         <button class="value">Soluciones</button>
         <button class="value" >Quiz</button>
+        <button class="value" onClick={goToAcidification}>Acidification</button>
         <button class="value" onClick={handleLogout} >Cerrar sesión</button>
       </div>
     </>
