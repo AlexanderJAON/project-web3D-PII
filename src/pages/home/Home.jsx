@@ -22,6 +22,10 @@ const Home = () => {
     navigate("/acidification");
   };
 
+  const goToShortage = () => {
+    navigate("/shortage");
+  };
+
   useEffect(() => {
     const getEmail = async () => {
       const queryEmail = query(
@@ -57,15 +61,17 @@ const Home = () => {
   }
 
   const audioRef = useRef();
+
+
   
 
   return (
     <>
       <div className="container-home">
         
-      <Canvas camera={{position:[200, 200, 200], fov: 40}}>
-      <directionalLight intensity={5} position={[-5, 5, -5]} />
-        <directionalLight intensity={2} position={[0, -5, 0]} />
+      <Canvas camera={{position:[100, 150, 200], fov: 60}}>
+      <directionalLight intensity={2} position={[8, 5, -8]} />
+        <directionalLight intensity={2} position={[-8, -2, -8]} />
         <ambientLight intensity={1.5} />
         <directionalLight position={[0, 10, 10]} intensity={5} />
         <PointerLockControls />
@@ -78,6 +84,8 @@ const Home = () => {
           <button class="value">Soluciones</button>
           <button class="value" >Quiz</button>
           <button class="value" onClick={handleLogout} >Cerrar sesión</button>
+          <button class="value" onClick={goToAcidification}>Acidificación</button>
+          <button class="value" onClick={goToShortage}>Escasez</button>
         </div>
       </div>
       
