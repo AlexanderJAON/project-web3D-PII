@@ -1,13 +1,14 @@
-import React, { Suspense, useCallback, useEffect, useRef , useState } from "react";
+import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import useAuthStore from "../../stores/use-auth-store";
-import { Canvas, useFrame, useThree} from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from 'three';
 import Moon from "./models/Moon";
-import {OrbitControls,PointerLockControls,Text,Text3D} from "@react-three/drei";
+import { OrbitControls, PointerLockControls, Text, Text3D } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
+import Introduction from "../introduction/Introduction"; 
 import "./Home.css";
 import Beach from "../../components/Beach/Beach";
 
@@ -28,11 +29,12 @@ const SmoothCameraMovement = ({ startMoving, setMovingDone }) => {
   return null;
 };
 
-
 const Home = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [startMoving, setStartMoving] = useState(false);
+
+  const [showIntroduction, setShowIntroduction] = useState(false);
 
   const handleLogout = useCallback(() => {
     logout();
@@ -51,12 +53,17 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  
   const setMovingDone = () => {
     setStartMoving(false); 
   };
 
-
+  const handleOpenIntroduction = () => {
+    setShowIntroduction(true);
+  };
+  
+  const handleCloseIntroduction = () => {
+    setShowIntroduction(false);
+  };
 
   useEffect(() => {
     const getEmail = async () => {
@@ -107,7 +114,7 @@ const Home = () => {
   return (
     <>
       <div className="container-home">
-        <Canvas   style={{ background: 'linear-gradient(#aad1e7, #063149)' }} camera={{ position: [0, 60, 140], fov: 65 }}>
+        <Canvas style={{ background: 'linear-gradient(#aad1e7, #063149)' }} camera={{ position: [0, 60, 140], fov: 65 }}>
           <directionalLight intensity={0.5} position={[8, 5, -8]} />
           <directionalLight intensity={0.5} position={[-8, -2, -8]} />
           <ambientLight intensity={1} />
@@ -133,7 +140,7 @@ const Home = () => {
               height={0.2}
               position={[-180, 100, -80]}
             >
-              Sumate a nosotros y busca medidas para cuidar el planeta
+              Súmate a nosotros y busca medidas para cuidar el planeta
               <meshStandardMaterial color="#7c5634" />
             </Text3D>
             <Beach position={[-60, -40, 0]} />
@@ -141,9 +148,12 @@ const Home = () => {
           <CameraPositionLogger />
           <PositionalAudio autoplay ref={audioRef} loop url="/sounds/cancion.mp3" />
         </Canvas>
+        
         <nav>
           <div className="input">
-            <button className="value">Introducción</button>
+            <button className="value" onClick={handleOpenIntroduction}>
+              Introducción
+            </button>
             <button className="value">Acerca de nosotros</button>
             <button className="value">Soluciones</button>
             <button className="value">Quiz</button>
@@ -159,6 +169,8 @@ const Home = () => {
           </div>
         </nav>
       </div>
+
+      {showIntroduction && <Introduction onClose={handleCloseIntroduction} />}
     </>
   );
 };

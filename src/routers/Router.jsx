@@ -31,7 +31,7 @@ const Router = createBrowserRouter([
         element: (
             <ProtectedRoute><Shortage/></ProtectedRoute>
         )
-    }
+    },
 ])
 
 export default Router;
