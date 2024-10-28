@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { Suspense, useCallback, useEffect, useRef , useState } from "react";
 import useAuthStore from "../../stores/use-auth-store";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree} from "@react-three/fiber";
+import * as THREE from 'three';
 import Moon from "./models/Moon";
-import { OrbitControls, PointerLockControls, Text , Text3D } from "@react-three/drei";
+import {OrbitControls,PointerLockControls,Text,Text3D} from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
@@ -10,9 +11,28 @@ import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import Beach from "../../components/Beach/Beach";
 
+const SmoothCameraMovement = ({ startMoving, setMovingDone }) => {
+  const { camera } = useThree();
+  const targetPosition = new THREE.Vector3(camera.position.x, camera.position.y - 55, camera.position.z);
+
+  useFrame(() => {
+    if (startMoving) {
+      camera.position.lerp(targetPosition, 0.1);
+      
+      if (camera.position.distanceTo(targetPosition) < 0.1) {
+        setMovingDone(); 
+      }
+    }
+  });
+
+  return null;
+};
+
+
 const Home = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const [startMoving, setStartMoving] = useState(false);
 
   const handleLogout = useCallback(() => {
     logout();
@@ -25,6 +45,18 @@ const Home = () => {
   const goToShortage = () => {
     navigate("/shortage");
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => setStartMoving(true), 3000); 
+    return () => clearTimeout(timer);
+  }, []);
+
+  
+  const setMovingDone = () => {
+    setStartMoving(false); 
+  };
+
+
 
   useEffect(() => {
     const getEmail = async () => {
@@ -72,38 +104,62 @@ const Home = () => {
     return null;
   };
 
-  
-
   return (
     <>
       <div className="container-home">
-        
-      <Canvas camera={{ position: [0, 60, 140] , fov: 60 }}>
-      <directionalLight intensity={2} position={[8, 5, -8]} />
-        <directionalLight intensity={2} position={[-8, -2, -8]} />
-        <ambientLight intensity={1.5} />
-        <directionalLight position={[0, 10, 10]} intensity={5} />
-        <OrbitControls />
-        <Beach position={[-60, -40, 0]}/>
-        <CameraPositionLogger />
+        <Canvas   style={{ background: 'linear-gradient(#aad1e7, #063149)' }} camera={{ position: [0, 60, 140], fov: 65 }}>
+          <directionalLight intensity={0.5} position={[8, 5, -8]} />
+          <directionalLight intensity={0.5} position={[-8, -2, -8]} />
+          <ambientLight intensity={1} />
+          <directionalLight position={[0, 10, 10]} intensity={5} />
+          <OrbitControls />
+
+          <SmoothCameraMovement startMoving={startMoving} setMovingDone={setMovingDone} />
+
+          <Suspense fallback={null}>
+            {" "}     
+            <Text3D
+              font="/fonts/Impact_Club_Regular.json"
+              size={8}
+              height={0.2}
+              position={[-160, 110, -80]}
+            >
+              El cuidado del medio ambiente es de vital relevancia.
+              <meshStandardMaterial color="#7c5634" />
+            </Text3D>
+            <Text3D
+              font="/fonts/Impact_Club_Regular.json"
+              size={8}
+              height={0.2}
+              position={[-180, 100, -80]}
+            >
+              Sumate a nosotros y busca medidas para cuidar el planeta
+              <meshStandardMaterial color="#7c5634" />
+            </Text3D>
+            <Beach position={[-60, -40, 0]} />
+          </Suspense>
+          <CameraPositionLogger />
           <PositionalAudio autoplay ref={audioRef} loop url="/sounds/cancion.mp3" />
         </Canvas>
-      |<nav>
-        <div class="input">
-          <button class="value">Introducción</button>
-          <button class="value">Acerca de nosotros</button>
-          <button class="value">Soluciones</button>
-          <button class="value" >Quiz</button>
-          <button class="value" onClick={handleLogout} >Cerrar sesión</button>
-          <button class="value" onClick={goToAcidification}>Acidificación</button>
-          <button class="value" onClick={goToShortage}>Escasez</button>
-        </div>
+        <nav>
+          <div className="input">
+            <button className="value">Introducción</button>
+            <button className="value">Acerca de nosotros</button>
+            <button className="value">Soluciones</button>
+            <button className="value">Quiz</button>
+            <button className="value" onClick={handleLogout}>
+              Cerrar sesión
+            </button>
+            <button className="value" onClick={goToAcidification}>
+              Acidificación
+            </button>
+            <button className="value" onClick={goToShortage}>
+              Escasez
+            </button>
+          </div>
         </nav>
       </div>
-      
-      
     </>
-
   );
 };
 
