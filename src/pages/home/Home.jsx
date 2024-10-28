@@ -11,7 +11,22 @@ import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import Beach from "../../components/Beach/Beach";
 
+const SmoothCameraMovement = ({ startMoving, setMovingDone }) => {
+  const { camera } = useThree();
+  const targetPosition = new THREE.Vector3(camera.position.x, camera.position.y - 55, camera.position.z);
 
+  useFrame(() => {
+    if (startMoving) {
+      camera.position.lerp(targetPosition, 0.1);
+      
+      if (camera.position.distanceTo(targetPosition) < 0.1) {
+        setMovingDone(); 
+      }
+    }
+  });
+
+  return null;
+};
 
 
 const Home = () => {
@@ -30,6 +45,17 @@ const Home = () => {
   const goToShortage = () => {
     navigate("/shortage");
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => setStartMoving(true), 3000); 
+    return () => clearTimeout(timer);
+  }, []);
+
+  
+  const setMovingDone = () => {
+    setStartMoving(false); 
+  };
+
 
 
   useEffect(() => {
@@ -81,13 +107,15 @@ const Home = () => {
   return (
     <>
       <div className="container-home">
-        <Canvas camera={{ position: [0, 60, 140], fov: 65 }}>
-          <directionalLight intensity={2} position={[8, 5, -8]} />
-          <directionalLight intensity={2} position={[-8, -2, -8]} />
-          <ambientLight intensity={1.5} />
+        <Canvas   style={{ background: 'linear-gradient(#aad1e7, #063149)' }} camera={{ position: [0, 60, 140], fov: 65 }}>
+          <directionalLight intensity={0.5} position={[8, 5, -8]} />
+          <directionalLight intensity={0.5} position={[-8, -2, -8]} />
+          <ambientLight intensity={1} />
           <directionalLight position={[0, 10, 10]} intensity={5} />
           <OrbitControls />
-          
+
+          <SmoothCameraMovement startMoving={startMoving} setMovingDone={setMovingDone} />
+
           <Suspense fallback={null}>
             {" "}     
             <Text3D
