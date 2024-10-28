@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import useAuthStore from "../../stores/use-auth-store";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Moon from "./models/Moon";
-import { PointerLockControls } from "@react-three/drei";
+import { OrbitControls, PointerLockControls, Text , Text3D } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
@@ -62,6 +62,15 @@ const Home = () => {
 
   const audioRef = useRef();
 
+  const cameraRef = useRef();
+
+  const CameraPositionLogger = () => {
+    useFrame(({ camera }) => {
+      console.log("Posición de la cámara:", camera.position);
+      console.log("Rotación de la cámara:", camera.rotation);
+    });
+    return null;
+  };
 
   
 
@@ -69,15 +78,17 @@ const Home = () => {
     <>
       <div className="container-home">
         
-      <Canvas camera={{position:[100, 150, 200], fov: 60}}>
+      <Canvas camera={{ position: [0, 60, 140] , fov: 60 }}>
       <directionalLight intensity={2} position={[8, 5, -8]} />
         <directionalLight intensity={2} position={[-8, -2, -8]} />
         <ambientLight intensity={1.5} />
         <directionalLight position={[0, 10, 10]} intensity={5} />
-        <PointerLockControls />
-        <Beach/>
+        <OrbitControls />
+        <Beach position={[-60, -40, 0]}/>
+        <CameraPositionLogger />
           <PositionalAudio autoplay ref={audioRef} loop url="/sounds/cancion.mp3" />
         </Canvas>
+      |<nav>
         <div class="input">
           <button class="value">Introducción</button>
           <button class="value">Acerca de nosotros</button>
@@ -87,7 +98,9 @@ const Home = () => {
           <button class="value" onClick={goToAcidification}>Acidificación</button>
           <button class="value" onClick={goToShortage}>Escasez</button>
         </div>
+        </nav>
       </div>
+      
       
     </>
 

@@ -7,7 +7,7 @@ const Beach = (props)=>{
     const {actions} = useAnimations(animations,group);
 
     return (
-        <group {...props} dispose={null}>
+        <group ref={group} position={[0, 0, 0]} rotation={[0, 0, 0]} scale={[1, 1, 1]} {...props} dispose={null}>
           <mesh
             castShadow
             receiveShadow
