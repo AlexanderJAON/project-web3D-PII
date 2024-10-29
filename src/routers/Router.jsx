@@ -5,7 +5,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Home from "../pages/home/Home";
 import Acidification from "../pages/acidification/Acidification";
 import Shortage from "../pages/shortage/Shortage";
-
+import Pollution from "../pages/pollution/Pollution";
 const Router = createBrowserRouter([
     {
         path:"/", 
@@ -31,7 +31,15 @@ const Router = createBrowserRouter([
         element: (
             <ProtectedRoute><Shortage/></ProtectedRoute>
         )
+    },
+    {
+        path: "/pollution",
+        element: (
+            <ProtectedRoute><Pollution/></ProtectedRoute>
+        )
     }
+    
+   
 ])
 
 export default Router;

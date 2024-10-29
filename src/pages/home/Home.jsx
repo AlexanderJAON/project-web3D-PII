@@ -46,6 +46,10 @@ const Home = () => {
     navigate("/shortage");
   };
 
+  const goToPollution = () => {
+    navigate("/pollution");
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => setStartMoving(true), 3000); 
     return () => clearTimeout(timer);
@@ -155,6 +159,9 @@ const Home = () => {
             </button>
             <button className="value" onClick={goToShortage}>
               Escasez
+            </button>
+            <button className="value" onClick={goToPollution}>
+              Contaminación
             </button>
           </div>
         </nav>
