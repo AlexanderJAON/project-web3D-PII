@@ -32,6 +32,12 @@ const Router = createBrowserRouter([
             <ProtectedRoute><Shortage/></ProtectedRoute>
         )
     },
+    {
+        path: "/pollution",
+        element: (
+            <ProtectedRoute><Pollution/></ProtectedRoute>
+        )
+    },
 
 ])
 
