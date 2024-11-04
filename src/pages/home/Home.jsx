@@ -190,14 +190,17 @@ const Home = () => {
           </Suspense>
 
           <FloatingAnimation frequency={1.5} amplitude={0.3}>
-            <FishSkeleton position={[-50, -30, 40]} />
+            <FishSkeleton position={[-50, -30, 40]} onClick={goToShortage}/>
           </FloatingAnimation>
+
           <FloatingAnimation frequency={1.2} amplitude={0.5}>
-            <Coral position={[0, -30, 40]} />
+            <Coral position={[0, -30, 40]} onClick={goToAcidification}/>
           </FloatingAnimation>
+
           <FloatingAnimation frequency={1.8} amplitude={0.4}>
-            <Trash position={[50, -30, 40]} />
+            <Trash position={[50, -33, 40]} onClick={goToPollution}/>    
           </FloatingAnimation>
+          
         </Canvas>
 
         <nav>
