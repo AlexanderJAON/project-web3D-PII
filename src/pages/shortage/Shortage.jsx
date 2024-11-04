@@ -1,49 +1,60 @@
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import MantaRay from './models/MantaRay';
+import React from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import MantaRay from "./models/MantaRay";
+import MiniOcean from "./models/MiniOcean";
+import "./Shortage.css";
 
 const EarthScene = () => {
-    return (
-      <Canvas 
-      shadows camera={{ position: [0, 2, 12], fov: 45 }}
-      style={{ background: 'linear-gradient(#1e3d59, #1c2541)', marginTop: '50px' }}>
-        <directionalLight
+  return (
+    <Canvas shadows camera={{ position: [-1, 0, 17], fov: 55 }}>
+      <directionalLight
         castShadow
         intensity={2}
         position={[0, 10, 0]}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <MantaRay/>
-        <OrbitControls />
-      </Canvas>
-    );
-  };
+      <ambientLight />
+      <pointLight position={[10, 10, 10]} />
+      <MantaRay position={[-1, -5.2, 0]} />
+      <MiniOcean position={[0, -10.2, 0]} />
+      <OrbitControls />
+    </Canvas>
+  );
+};
 
 const Shortage = () => {
-    return (
-
-    <div style={{ height: '100vh', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '0', width: '100%', color: 'black', textAlign: 'center', zIndex: 1 }}>
-          
-        <h1 style={{ fontSize: '4rem', margin: '20px 0' }} className="fade-in">
+  return (
+    <div
+      class="container-shortage"
+      style={{ height: "100vh", position: "relative" }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          width: "100%",
+          color: "black",
+          textAlign: "center",
+          zIndex: 1,
+        }}
+      >
+        <h1 style={{ fontSize: "4rem", margin: "20px 0" }} className="fade-in">
           Escasez del agua
         </h1>
-        <p style={{ fontSize: '1.5rem', maxWidth: '700px', margin: '0 auto' }} className="fade-in">
-        ¿Sabías que miles de millones de personas en el mundo no tienen acceso a agua potable? La escasez de agua es uno de los mayores desafíos de nuestro tiempo.
+        <p
+          style={{ fontSize: "1.5rem", maxWidth: "700px", margin: "0 auto" }}
+          className="fade-in"
+        >
+          ¿Sabías que miles de millones de personas en el mundo no tienen acceso
+          a agua potable? La escasez de agua es uno de los mayores desafíos de
+          nuestro tiempo.
         </p>
-        
-        </div>
-        
-        <EarthScene/>
-        
-        
-
+      </div>
+      <EarthScene />
     </div>
-    );
-}
+  );
+};
 
-export default Shortage; 
+export default Shortage;

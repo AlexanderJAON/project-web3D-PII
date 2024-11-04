@@ -1,0 +1,11 @@
+.container-shortage{
+    color: white;
+    display: flex;
+    justify-content: center;
+    font-family:'4rem';
+    align-items: center;
+    height: 100vh;
+    background: url(/images/background-ocean1.jpg) no-repeat center center fixed;
+    background-size: cover;
+  }
+
