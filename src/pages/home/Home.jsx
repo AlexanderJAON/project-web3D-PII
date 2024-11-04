@@ -13,8 +13,7 @@ import {
   OrbitControls,
   PointerLockControls,
   Text,
-  Text3D,
-} from "@react-three/drei";
+  Text3D, Html } from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
@@ -66,7 +65,7 @@ const Home = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [startMoving, setStartMoving] = useState(false);
-
+  const [hoveredModel, setHoveredModel] = useState(null); // Estado para almacenar el modelo que está siendo hovereado
   const [showIntroduction, setShowIntroduction] = useState(false);
 
   const handleLogout = useCallback(() => {
@@ -86,7 +85,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => setStartMoving(true), 3000);
+    const timer = setTimeout(() => setStartMoving(true), 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -148,6 +147,12 @@ const Home = () => {
     return null;
   };
 
+  // Descripciones de cada modelo
+  const descriptions = {
+    pollution: "Contaminación: Impacto de los residuos en el agua.",
+    acidification: "Acidificación: Efecto del CO2 en los océanos.",
+    shortage: "Escasez: Reducción de recursos hídricos.",
+  };
   return (
     <>
       <div className="container-home">
@@ -190,17 +195,35 @@ const Home = () => {
           </Suspense>
 
           <FloatingAnimation frequency={1.5} amplitude={0.3}>
-            <FishSkeleton position={[-50, -30, 40]} onClick={goToShortage}/>
+            <FishSkeleton position={[-50, -30, 40]} onClick={goToShortage} onPointerOver={() => setHoveredModel("pollution")}
+            onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
+          {hoveredModel === "pollution" && (
+            <Html position={[-50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club'}}>
+              {descriptions.pollution}
+            </Html>
+          )}
 
           <FloatingAnimation frequency={1.2} amplitude={0.5}>
-            <Coral position={[0, -30, 40]} onClick={goToAcidification}/>
+            <Coral position={[0, -30, 40]} onClick={goToAcidification} onPointerOver={() => setHoveredModel("acidification")}
+            onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
+          {hoveredModel === "acidification" && (
+            <Html position={[0, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+              {descriptions.acidification}
+            </Html>
+          )}
 
           <FloatingAnimation frequency={1.8} amplitude={0.4}>
-            <Trash position={[50, -33, 40]} onClick={goToPollution}/>    
+            <Trash position={[50, -33, 40]} onClick={goToPollution} onPointerOver={() => setHoveredModel("shortage")}
+            onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
-          
+          {hoveredModel === "shortage" && (
+            <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+              {descriptions.shortage}
+            </Html>
+          )}
+
         </Canvas>
 
         <nav>
@@ -228,6 +251,7 @@ const Home = () => {
       </div>
 
       {showIntroduction && <Introduction onClose={handleCloseIntroduction} />}
+      
     </>
   );
 };
