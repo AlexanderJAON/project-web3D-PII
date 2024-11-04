@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 
 
 const Moon = forwardRef((props, ref) => {
-  const { nodes } = useGLTF("models-3d/moon.glb");
+  const { nodes,materials } = useGLTF("models-3d/moon.glb");
 
   return (
     <group ref={ref} {...props} dispose={null}>

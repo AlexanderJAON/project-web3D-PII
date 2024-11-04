@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 import Introduction from "../introduction/Introduction"; 
 import "./Home.css";
 import Beach from "../../components/Beach/Beach";
+import Coral from "../home/models/Coral";
+import FishSkeleton from "../home/models/FishSkeleton";
+import Trash from "../home/models/Trash";
 
 const SmoothCameraMovement = ({ startMoving, setMovingDone }) => {
   const { camera } = useThree();
@@ -27,6 +30,23 @@ const SmoothCameraMovement = ({ startMoving, setMovingDone }) => {
   });
 
   return null;
+};
+
+// Componente para aplicar animación suave a los modelos
+const FloatingAnimation = ({ children, frequency = 2, amplitude = 0.5 }) => {
+  const ref = useRef();
+
+  useFrame(({ clock }) => {
+    const time = clock.getElapsedTime();
+    if (ref.current) {
+      // Movimiento suave hacia arriba y hacia abajo en el eje Y
+      ref.current.position.y += Math.sin(time * frequency) * amplitude * 0.01;
+      // También puedes añadir un ligero movimiento en otros ejes, si quieres
+      ref.current.rotation.z += Math.sin(time * frequency) * amplitude * 0.001;
+    }
+  });
+
+  return <group ref={ref}>{children}</group>;
 };
 
 const Home = () => {
@@ -149,9 +169,14 @@ const Home = () => {
             </Text3D>
             <Beach position={[-60, -40, 0]} />
           </Suspense>
-          <CameraPositionLogger />
-          <PositionalAudio autoplay ref={audioRef} loop url="/sounds/cancion.mp3" />
+
+          <FishSkeleton position={[-50 , -30, 40]}/>
+          <Coral position={[0 , -30, 40]}/>
+          <Trash position={[50 , -30, 40]}/>
+
+          
         </Canvas>
+
         
         <nav>
           <div className="input">

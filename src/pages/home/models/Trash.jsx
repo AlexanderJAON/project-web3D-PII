@@ -2,10 +2,10 @@ import React, { forwardRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
 const Trashbag = forwardRef((props, ref) => {
-  const { nodes } = useGLTF("models-3d/trashBag.glb");
+  const { nodes,materials } = useGLTF("models-3d/trashBag.glb");
 
   return (
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} scale={0.1}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group name="b9e59cd1503c493994e413735d066248objcleanermaterialmergergles">
