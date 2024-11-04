@@ -195,12 +195,12 @@ const Home = () => {
           </Suspense>
 
           <FloatingAnimation frequency={1.5} amplitude={0.3}>
-            <FishSkeleton position={[-50, -30, 40]} onClick={goToShortage} onPointerOver={() => setHoveredModel("pollution")}
+            <FishSkeleton position={[-50, -30, 40]} onClick={goToShortage} onPointerOver={() => setHoveredModel("shortage")}
             onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
-          {hoveredModel === "pollution" && (
+          {hoveredModel === "shortage" && (
             <Html position={[-50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club'}}>
-              {descriptions.pollution}
+              {descriptions.shortage}
             </Html>
           )}
 
@@ -215,12 +215,12 @@ const Home = () => {
           )}
 
           <FloatingAnimation frequency={1.8} amplitude={0.4}>
-            <Trash position={[50, -33, 40]} onClick={goToPollution} onPointerOver={() => setHoveredModel("shortage")}
+            <Trash position={[50, -33, 40]} onClick={goToPollution} onPointerOver={() => setHoveredModel("pollution")}
             onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
-          {hoveredModel === "shortage" && (
+          {hoveredModel === "pollution" && (
             <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
-              {descriptions.shortage}
+              {descriptions.pollution}
             </Html>
           )}
 
