@@ -1,14 +1,25 @@
-import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import useAuthStore from "../../stores/use-auth-store";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import * as THREE from 'three';
+import * as THREE from "three";
 import Moon from "./models/Moon";
-import { OrbitControls, PointerLockControls, Text, Text3D } from "@react-three/drei";
+import {
+  OrbitControls,
+  PointerLockControls,
+  Text,
+  Text3D,
+} from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
-import Introduction from "../introduction/Introduction"; 
+import Introduction from "../introduction/Introduction";
 import "./Home.css";
 import Beach from "../../components/Beach/Beach";
 import Coral from "../home/models/Coral";
@@ -17,14 +28,18 @@ import Trash from "../home/models/Trash";
 
 const SmoothCameraMovement = ({ startMoving, setMovingDone }) => {
   const { camera } = useThree();
-  const targetPosition = new THREE.Vector3(camera.position.x, camera.position.y - 55, camera.position.z);
+  const targetPosition = new THREE.Vector3(
+    camera.position.x,
+    camera.position.y - 55,
+    camera.position.z
+  );
 
   useFrame(() => {
     if (startMoving) {
       camera.position.lerp(targetPosition, 0.1);
-      
+
       if (camera.position.distanceTo(targetPosition) < 0.1) {
-        setMovingDone(); 
+        setMovingDone();
       }
     }
   });
@@ -39,9 +54,7 @@ const FloatingAnimation = ({ children, frequency = 2, amplitude = 0.5 }) => {
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
     if (ref.current) {
-      // Movimiento suave hacia arriba y hacia abajo en el eje Y
       ref.current.position.y += Math.sin(time * frequency) * amplitude * 0.01;
-      // También puedes añadir un ligero movimiento en otros ejes, si quieres
       ref.current.rotation.z += Math.sin(time * frequency) * amplitude * 0.001;
     }
   });
@@ -73,18 +86,18 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => setStartMoving(true), 3000); 
+    const timer = setTimeout(() => setStartMoving(true), 3000);
     return () => clearTimeout(timer);
   }, []);
 
   const setMovingDone = () => {
-    setStartMoving(false); 
+    setStartMoving(false);
   };
 
   const handleOpenIntroduction = () => {
     setShowIntroduction(true);
   };
-  
+
   const handleCloseIntroduction = () => {
     setShowIntroduction(false);
   };
@@ -138,17 +151,23 @@ const Home = () => {
   return (
     <>
       <div className="container-home">
-        <Canvas style={{ background: 'linear-gradient(#aad1e7, #063149)' }} camera={{ position: [0, 60, 140], fov: 65 }}>
+        <Canvas
+          style={{ background: "linear-gradient(#aad1e7, #063149)" }}
+          camera={{ position: [0, 60, 140], fov: 65 }}
+        >
           <directionalLight intensity={0.5} position={[8, 5, -8]} />
           <directionalLight intensity={0.5} position={[-8, -2, -8]} />
           <ambientLight intensity={1} />
           <directionalLight position={[0, 10, 10]} intensity={5} />
           <OrbitControls />
 
-          <SmoothCameraMovement startMoving={startMoving} setMovingDone={setMovingDone} />
+          <SmoothCameraMovement
+            startMoving={startMoving}
+            setMovingDone={setMovingDone}
+          />
 
           <Suspense fallback={null}>
-            {" "}     
+            {" "}
             <Text3D
               font="/fonts/Impact_Club_Regular.json"
               size={8}
@@ -170,14 +189,17 @@ const Home = () => {
             <Beach position={[-60, -40, 0]} />
           </Suspense>
 
-          <FishSkeleton position={[-50 , -30, 40]}/>
-          <Coral position={[0 , -30, 40]}/>
-          <Trash position={[50 , -30, 40]}/>
-
-          
+          <FloatingAnimation frequency={1.5} amplitude={0.3}>
+            <FishSkeleton position={[-50, -30, 40]} />
+          </FloatingAnimation>
+          <FloatingAnimation frequency={1.2} amplitude={0.5}>
+            <Coral position={[0, -30, 40]} />
+          </FloatingAnimation>
+          <FloatingAnimation frequency={1.8} amplitude={0.4}>
+            <Trash position={[50, -30, 40]} />
+          </FloatingAnimation>
         </Canvas>
 
-        
         <nav>
           <div className="input">
             <button className="value" onClick={handleOpenIntroduction}>
