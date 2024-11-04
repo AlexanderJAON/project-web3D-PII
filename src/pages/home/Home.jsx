@@ -164,7 +164,7 @@ const Home = () => {
           <directionalLight intensity={0.5} position={[-8, -2, -8]} />
           <ambientLight intensity={1} />
           <directionalLight position={[0, 10, 10]} intensity={5} />
-          <OrbitControls />
+          <OrbitControls enableRotate={false} enableZoom={false} enablePan={false}/>
 
           <SmoothCameraMovement
             startMoving={startMoving}
