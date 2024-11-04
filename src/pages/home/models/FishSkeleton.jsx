@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
 const FishSkeleton = forwardRef((props, ref) => {
-  const { nodes } = useGLTF("models-3d/fishSkeleton.glb");
+  const { nodes, materials } = useGLTF("models-3d/fishSkeleton.glb");
 
   return (
     <group {...props} dispose={null}>
