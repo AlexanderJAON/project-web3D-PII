@@ -39,7 +39,7 @@ const Pollution = () => {
           </h1>
           <p style={{
             fontSize: '1.2rem', maxWidth: '700px', margin: '20px auto 0', fontFamily: 'Impact Club',
-            textAlign: 'center', color: '#a47e2e'  
+            textAlign: 'center', color: '#7fe00a'  
           }} className="fade-in">
             La contaminación del agua es uno de los mayores desafíos medioambientales. Desde residuos plásticos hasta productos químicos tóxicos, nuestros ríos, lagos y océanos se enfrentan a una crisis sin precedentes. Más de 2 mil millones de personas carecen de acceso a agua potable, y los ecosistemas acuáticos sufren un deterioro irreversible.
           </p>
