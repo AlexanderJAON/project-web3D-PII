@@ -4,6 +4,8 @@ import { OrbitControls } from "@react-three/drei";
 import MantaRay from "./models/MantaRay";
 import MiniOcean from "./models/MiniOcean";
 import "./Shortage.css";
+import { useNavigate } from "react-router-dom";
+
 
 const EarthScene = () => {
   return (
@@ -17,14 +19,23 @@ const EarthScene = () => {
       />
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-      <MantaRay position={[-1, -5.2, 0]} />
+      <MantaRay castShadow position={[-1, -5.2, 0]} />
       <MiniOcean position={[0, -10.2, 0]} />
       <OrbitControls />
     </Canvas>
   );
 };
 
+
+
 const Shortage = () => {
+
+  const navigate = useNavigate();
+
+  const goToAwareness = () => {
+    navigate("/awareness");
+  };
+ 
   return (
     <div
       class="container-shortage"
@@ -51,6 +62,7 @@ const Shortage = () => {
           a agua potable? La escasez de agua es uno de los mayores desafíos de
           nuestro tiempo.
         </p>
+        <button className="btn-awareness" onClick={goToAwareness}> continuar </button>
       </div>
       <EarthScene />
     </div>

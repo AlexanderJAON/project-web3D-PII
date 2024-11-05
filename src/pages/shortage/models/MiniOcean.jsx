@@ -133,6 +133,7 @@ const MiniOcean = (props)=>{
                 />
                 <mesh
                   name="Floor"
+                  receiveShadow
                   geometry={nodes.Floor.geometry}
                   material={materials.wire_165144082}
                   position={[8392.15, 703.217, -3631.711]}
@@ -223,6 +224,7 @@ const MiniOcean = (props)=>{
                 />
                 <mesh
                   name="SuperFloor"
+                  receiveShadow
                   geometry={nodes.SuperFloor.geometry}
                   material={materials.wire_017083090}
                   position={[8392.15, 703.217, -3631.711]}
