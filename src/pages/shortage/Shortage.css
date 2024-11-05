@@ -9,3 +9,15 @@
     background-size: cover;
   }
 
+.btn-awareness{
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    background: #09bc86;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease, transform 0.2s ease;
+}

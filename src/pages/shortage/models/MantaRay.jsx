@@ -31,6 +31,8 @@ const MantaRay =(props) => {
                         geometry={nodes.Object_7.geometry}
                         material={materials.MantaRay}
                         skeleton={nodes.Object_7.skeleton}
+                        castShadow
+                        receiveShadow
                       />
                       <primitive object={nodes._rootJoint} />
                     </group>

@@ -7,6 +7,7 @@ import Acidification from "../pages/acidification/Acidification";
 import Shortage from "../pages/shortage/Shortage";
 import Pollution from "../pages/pollution/Pollution";
 import Sensitization from "../pages/acidification/Sensitization"
+import Awareness from "../pages/shortage/Awareness";
 const Router = createBrowserRouter([
     {
         path:"/", 
@@ -45,6 +46,12 @@ const Router = createBrowserRouter([
             <ProtectedRoute><Sensitization/></ProtectedRoute>
         )
     },
+    {
+        path: "/awareness",
+        element: (
+            <ProtectedRoute><Awareness/></ProtectedRoute>
+        )
+    }
 
 
 ])
