@@ -1,21 +1,22 @@
-import React, { useEffect, useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import React, { useEffect, useRef } from 'react';
+import { useGLTF, useAnimations, OrbitControls } from '@react-three/drei';
+import { useThree } from '@react-three/fiber';
 
 const Tortoise = (props) => {
-  const group = useRef()
+  const group = useRef();
   const { nodes, materials, animations } = useGLTF('models-3d/tortoise.glb');
-  const { actions } = useAnimations(animations, group)
+  const { actions } = useAnimations(animations, group);
+  const { camera, gl } = useThree();
 
   useEffect(() => {
     if (actions) {
-      console.log(Object.keys(actions)); 
       const action = actions[Object.keys(actions)[0]]; 
       if (action) {
         action.play();
       }
     }
   }, [actions]);
-  
+
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
@@ -43,9 +44,11 @@ const Tortoise = (props) => {
           </group>
         </group>
       </group>
+      
     </group>
-  )
+  );
 }
-export default Tortoise;
 
 useGLTF.preload('models-3d/tortoise.glb');
+
+export default Tortoise;

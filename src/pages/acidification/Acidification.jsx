@@ -21,11 +21,11 @@ const EarthScene = () => {
       />
       <ambientLight />
       <Stars />
-      <Tortoise castShadow />
-      <OrbitControls />
+        <Tortoise castShadow />
       <OceanFloor position={[0, -1.2, 0]} />
     </Canvas>
   );
+  
 };
 
 const Acidification = () => {
