@@ -61,7 +61,7 @@ const Acidification = () => {
     const newIndex = (topicIndex + 1) % topics.length;
     setTopicIndex(newIndex);
 
-    // Cambia la posición de la cámara en el eje horizontal (eje X) para girar hacia la derecha en el primer clic
+    
     setCameraPosition([
       Math.cos(newIndex * (2 * Math.PI) / topics.length) * 12, 
       2, 
