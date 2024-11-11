@@ -63,6 +63,9 @@ const Shortage = () => {
           nuestro tiempo.
         </p>
         <button className="btn-awareness" onClick={goToAwareness}> continuar </button>
+        <h2 style={{ fontSize: "2rem", color: 'white',  margin: "20px 0" }} className="fade-in">
+          Da click sobre mi
+        </h2>
       </div>
       <EarthScene />
     </div>
