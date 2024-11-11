@@ -180,7 +180,7 @@ const Home = () => {
               position={[-160, 110, -80]}
             >
               El cuidado del medio ambiente es de vital relevancia.
-              <meshStandardMaterial color="#7c5634" />
+              <meshStandardMaterial color="#FF533A" />
             </Text3D>
             <Text3D
               font="/fonts/Impact_Club_Regular.json"
@@ -189,7 +189,7 @@ const Home = () => {
               position={[-180, 100, -80]}
             >
               Súmate a nosotros y busca medidas para cuidar el planeta
-              <meshStandardMaterial color="#7c5634" />
+              <meshStandardMaterial color="#FF533A" />
             </Text3D>
             <Beach position={[-60, -40, 0]} />
           </Suspense>
@@ -199,7 +199,7 @@ const Home = () => {
             onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
           {hoveredModel === "shortage" && (
-            <Html position={[-50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club'}}>
+            <Html position={[-50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club'}}>
               {descriptions.shortage}
             </Html>
           )}
@@ -209,7 +209,7 @@ const Home = () => {
             onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
           {hoveredModel === "acidification" && (
-            <Html position={[0, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+            <Html position={[0, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
               {descriptions.acidification}
             </Html>
           )}
@@ -219,35 +219,12 @@ const Home = () => {
             onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
           {hoveredModel === "pollution" && (
-            <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#7fe00a', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+            <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
               {descriptions.pollution}
             </Html>
           )}
 
         </Canvas>
-
-        <nav>
-          <div className="input">
-            <button className="value" onClick={handleOpenIntroduction}>
-              Introducción
-            </button>
-            <button className="value">Acerca de nosotros</button>
-            <button className="value">Soluciones</button>
-            <button className="value">Quiz</button>
-            <button className="value" onClick={handleLogout}>
-              Cerrar sesión
-            </button>
-            <button className="value" onClick={goToAcidification}>
-              Acidificación
-            </button>
-            <button className="value" onClick={goToShortage}>
-              Escasez
-            </button>
-            <button className="value" onClick={goToPollution}>
-              Contaminación
-            </button>
-          </div>
-        </nav>
       </div>
 
       {showIntroduction && <Introduction onClose={handleCloseIntroduction} />}
