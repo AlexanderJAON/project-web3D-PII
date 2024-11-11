@@ -3,7 +3,8 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import RotatingCamera from './RotatingCamera';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Fish from './models/Fish';
 
 const EarthScene = ({ cameraPosition }) => {
   return (
@@ -27,6 +28,7 @@ const EarthScene = ({ cameraPosition }) => {
         shadow-mapSize-height={1024}
       />
       <ambientLight />
+      <Fish/>
       <OrbitControls enablePan={false} enableZoom={false} enableRotate={false} />
       <Environment files="./hdr/UnderWater_A_4k.hdr" background />
     </Canvas>
@@ -57,11 +59,10 @@ const Acidification = () => {
     },
   ];
 
-  const handleButtonClick = () => {
-    const newIndex = (topicIndex + 1) % topics.length;
+  const updateTopic = (direction) => {
+    let newIndex = (topicIndex + direction + topics.length) % topics.length;
     setTopicIndex(newIndex);
 
-    
     setCameraPosition([
       Math.cos(newIndex * (2 * Math.PI) / topics.length) * 12, 
       2, 
@@ -69,7 +70,24 @@ const Acidification = () => {
     ]);
   };
 
-  
+  const handleButtonClick = () => {
+    updateTopic(1);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'ArrowRight') {
+      updateTopic(1); 
+    } else if (event.key === 'ArrowLeft') {
+      updateTopic(-1); 
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [topicIndex]);
 
   return (
     <div style={{ height: '100vh', position: 'relative' }}>
