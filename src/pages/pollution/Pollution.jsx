@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import Island from './models/Island';
 import PileTrash from './models/PileTrash';
-
+import Exclamation from './models/Exclamation_point';
 const EarthScene = () => {
   return (
     <Canvas 
@@ -23,6 +23,7 @@ const EarthScene = () => {
         <OrbitControls />
         <PileTrash position={[-160 , 1.4 , 0 ]} rotation={[0, Math.PI / 18, 0]}/>
         <PileTrash position={[-177 , 1.4 , 20 ]} rotation={[0, Math.PI / -42, 0]} />
+        <Exclamation position={[-177 , 10 , 20 ]} />
         <PileTrash position={[-160 , 1.4 , 40 ]} rotation={[0, Math.PI /  3.7, 0]}/>
         <PileTrash position={[-125 , 1.4 , -20 ]} rotation={[0, Math.PI / 1, 0]}/>
     </Canvas>
