@@ -19,7 +19,7 @@ const EarthScene = () => {
       />
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-      <MantaRay castShadow position={[-1, -5.2, 0]} />
+      <MantaRay castShadow position={[-1, -5.2, 0]} onClick={() => window.open('https://youtu.be/2qxhlCuTe4w?si=gj_XhZsGQLzpevBt', '_blank')} />
       <MiniOcean position={[0, -10.2, 0]} />
       <OrbitControls />
     </Canvas>

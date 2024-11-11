@@ -4,6 +4,7 @@ import { KeyboardControls, OrbitControls } from "@react-three/drei";
 import Lizard from "./models/Lizard";
 import { useEffect, useMemo, useState } from "react";
 import "./Awareness.css";
+import WelcomeText from "./WelcomeText";
 
 const EarthSceneAwa = () => {
   return (
@@ -21,6 +22,7 @@ const EarthSceneAwa = () => {
       />
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
+      <WelcomeText/>
       <Desert position={[-18.4, -1, 9]} rotation={[-0.03, 0.4, 0]} />
       <Lizard castShadow position={[-18.4, -0.9, 9]} />
       <OrbitControls />
