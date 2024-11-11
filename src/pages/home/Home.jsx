@@ -67,6 +67,15 @@ const Home = () => {
   const [startMoving, setStartMoving] = useState(false);
   const [hoveredModel, setHoveredModel] = useState(null); // Estado para almacenar el modelo que está siendo hovereado
   const [showIntroduction, setShowIntroduction] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  useEffect(() => {
+    setIsPopupVisible(true);
+  }, []);
+
+  const closePopup = () => {
+    setIsPopupVisible(false);
+  };
+
 
   const handleLogout = useCallback(() => {
     logout();
@@ -156,6 +165,16 @@ const Home = () => {
   return (
     <>
       <div className="container-home">
+      {isPopupVisible && (
+        <div className="popup">
+          <div className="popup-content">
+            <h2>Introducción</h2>
+            <p>Los problemas medioambientales como la acidificación de los océanos, la escasez de agua y la pérdida de biodiversidad afectan gravemente nuestro planeta.
+            Este proyecto busca crear conciencia y promover acciones para mitigar estos problemas.</p>
+            <button onClick={closePopup}>Cerrar</button>
+          </div>
+        </div>
+      )}
         <Canvas
           style={{ background: "linear-gradient(#aad1e7, #063149)" }}
           camera={{ position: [0, 60, 140], fov: 65 }}
@@ -227,7 +246,7 @@ const Home = () => {
         </Canvas>
       </div>
 
-      {showIntroduction && <Introduction onClose={handleCloseIntroduction} />}
+     
       
     </>
   );
