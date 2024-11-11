@@ -26,19 +26,19 @@ const Lizard = (props)=>{
 
 
     if (forward){
-      lizardRef.current.position.x += 1*delta
+      lizardRef.current.position.x += 0.1*delta
     }
 
     if(back){
-      lizardRef.current.position.x -= 1*delta
+      lizardRef.current.position.x -= 0.1*delta
     }
 
     if(left){
-      lizardRef.current.position.y += 1*delta
+      lizardRef.current.position.y += 0.1*delta
     }
 
     if(right){
-      lizardRef.current.position.y -= 1*delta
+      lizardRef.current.position.y -= 0.1*delta
     }
   
     const pressed = get().back;
