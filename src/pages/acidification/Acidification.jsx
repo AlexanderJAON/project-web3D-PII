@@ -21,7 +21,7 @@ const EarthScene = () => {
       />
       <ambientLight />
       <Stars />
-        <Tortoise castShadow />
+        <Tortoise castShadow onClick={() => window.open('https://youtu.be/HOIB_Yda8Xo?si=Ad9tT-ECet9TlWvD', '_blank')} />
       <OceanFloor position={[0, -1.2, 0]} />
     </Canvas>
   );
