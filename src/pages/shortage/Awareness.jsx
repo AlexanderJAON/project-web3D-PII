@@ -25,7 +25,6 @@ const EarthSceneAwa = () => {
       <WelcomeText/>
       <Desert position={[-18.4, -1, 9]} rotation={[-0.03, 0.4, 0]} />
       <Lizard castShadow position={[-18.4, -0.9, 9]} />
-      <OrbitControls />
     </Canvas>
   );
 };
