@@ -6,54 +6,71 @@ import Home from "../pages/home/Home";
 import Acidification from "../pages/acidification/Acidification";
 import Shortage from "../pages/shortage/Shortage";
 import Pollution from "../pages/pollution/Pollution";
-import Sensitization from "../pages/acidification/Sensitization"
+import Sensitization from "../pages/acidification/Sensitization";
 import Awareness from "../pages/shortage/Awareness";
+import Menu from "../components/Menu"; // Importa el componente Menu
+
 const Router = createBrowserRouter([
     {
-        path:"/", 
+        path: "/", 
         element: (
-            <PublicRoute><Login/></PublicRoute>
+            <PublicRoute><Login /></PublicRoute>
         )
-        
     },
     {
-        path:"/home",
+        path: "/home",
         element: (
-            <ProtectedRoute><Home/></ProtectedRoute>
+            <>
+                <Menu />
+                <ProtectedRoute><Home /></ProtectedRoute>
+            </>
         )
     },
     {
         path: "/acidification",
         element: (
-            <ProtectedRoute><Acidification/></ProtectedRoute>
+            <>
+                <Menu />
+                <ProtectedRoute><Acidification /></ProtectedRoute>
+            </>
         )
     },
     {
         path: "/shortage",
         element: (
-            <ProtectedRoute><Shortage/></ProtectedRoute>
+            <>
+                <Menu />
+                <ProtectedRoute><Shortage /></ProtectedRoute>
+            </>
         )
     },
     {
         path: "/pollution",
         element: (
-            <ProtectedRoute><Pollution/></ProtectedRoute>
+            <>
+                <Menu />
+                <ProtectedRoute><Pollution /></ProtectedRoute>
+            </>
         )
     },
     {
         path: "/sensitization",
         element: (
-            <ProtectedRoute><Sensitization/></ProtectedRoute>
+            <>
+                <Menu />
+                <ProtectedRoute><Sensitization /></ProtectedRoute>
+            </>
         )
     },
     {
         path: "/awareness",
         element: (
-            <ProtectedRoute><Awareness/></ProtectedRoute>
+            <>
+                <Menu />
+                <ProtectedRoute><Awareness /></ProtectedRoute>
+            </>
         )
     }
-
-
-])
+]);
 
 export default Router;
