@@ -62,7 +62,7 @@ const Lizard = (props)=>{
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group 
           ref = {lizardRef}
-          name="Catwalk_Walk_Forward_03fbx" rotation={[Math.PI / 2, 0, 0]} scale={0.0040}>
+          name="Catwalk_Walk_Forward_03fbx" rotation={[Math.PI / 2, 0, 0]} scale={0.0020}>
             <group name="Object_2">
               <group name="RootNode">
                 <group name="Object_4">
