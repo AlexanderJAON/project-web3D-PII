@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
+import { RigidBody } from '@react-three/rapier';
 
 const Desert = (props)=>{
     const group = useRef();
@@ -7,7 +8,8 @@ const Desert = (props)=>{
     const {actions} = useAnimations(animations,group);
 
     return (
-        <group {...props} dispose={null}>
+      <RigidBody type='fixed' colliders="trimesh">
+        <group {...props} dispose={null} scale={50.2}>
           <group name="Scene">
             <group name="Desert" position={[0, 0.637, 0]} rotation={[-Math.PI / 2, 0, 0]}>
               <group name="Collada_visual_scene_group" rotation={[Math.PI / 2, 0, 0]}>
@@ -105,6 +107,7 @@ const Desert = (props)=>{
             />
           </group>
         </group>
+        </RigidBody>
       )
 }
 
