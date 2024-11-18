@@ -1,5 +1,6 @@
 import { useAnimations, useGLTF, useKeyboardControls } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
+import { RigidBody } from "@react-three/rapier"
 import { useEffect, useRef } from "react"
 
 const Lizard = (props)=>{
@@ -26,22 +27,23 @@ const Lizard = (props)=>{
 
 
     if (forward){
-      lizardRef.current.position.x += 0.1*delta
+      lizardRef.current.position.x += 2*delta
     }
 
     if(back){
-      lizardRef.current.position.x -= 0.1*delta
+      lizardRef.current.position.x -= 2*delta
     }
 
     if(left){
-      lizardRef.current.position.y += 0.1*delta
+      lizardRef.current.position.y += 2*delta
     }
 
     if(right){
-      lizardRef.current.position.y -= 0.1*delta
+      lizardRef.current.position.y -= 2*delta
     }
   
     const pressed = get().back;
+    
   });
 
   useEffect(() => {
@@ -57,12 +59,14 @@ const Lizard = (props)=>{
   }, [actions]);
 
   return (
+    <RigidBody type="dynamic">
+   
     <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group 
           ref = {lizardRef}
-          name="Catwalk_Walk_Forward_03fbx" rotation={[Math.PI / 2, 0, 0]} scale={0.0020}>
+          name="Catwalk_Walk_Forward_03fbx" rotation={[Math.PI / 2, 0, 0]} scale={0.1}>
             <group name="Object_2">
               <group name="RootNode">
                 <group name="Object_4">
@@ -92,7 +96,9 @@ const Lizard = (props)=>{
         </group>
       </group>
     </group>
+    </RigidBody>
   )
+  
 }
 
 useGLTF.preload("/models-3d/lizard_walk_animated.glb")

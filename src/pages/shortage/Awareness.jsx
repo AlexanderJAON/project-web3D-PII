@@ -5,12 +5,14 @@ import Lizard from "./models/Lizard";
 import { useEffect, useMemo, useState } from "react";
 import "./Awareness.css";
 import WelcomeText from "./WelcomeText";
+import { Physics } from "@react-three/rapier";
+import Staging from "./staging/Staging";
 
 const EarthSceneAwa = () => {
   return (
     <Canvas
       shadows
-      camera={{ position: [-20.1, -0.5, 10], fov: 55 }}
+      camera={{ position: [0, 60, 140], fov: 55 }}
       style={{ width: "100vw", height: "100vh" }}
     >
       <directionalLight
@@ -23,8 +25,13 @@ const EarthSceneAwa = () => {
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <WelcomeText/>
-      <Desert position={[-18.4, -1, 9]} rotation={[-0.03, 0.4, 0]} />
-      <Lizard castShadow position={[-18.4, -0.9, 9]} />
+      <Physics>
+      <Desert position={[-18.4, -2, 9]} rotation={[-0.2, 1.6, 0]} recieveShadows/>
+      <Lizard castShadow position={[-18.4, 1, 9]} />
+      <Staging/>
+      </Physics>
+      
+      <OrbitControls/>
     </Canvas>
   );
 };
