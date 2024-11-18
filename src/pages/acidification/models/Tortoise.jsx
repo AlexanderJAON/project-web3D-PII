@@ -20,7 +20,7 @@ const Tortoise = (props) => {
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
-        <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]} scale={0.003} position={[2, 2, 0]}>
+        <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]} scale={0.003} position={[4, 0.5, 0]}>
           <group name="65da75f46dd245e49f6cb513d196054ffbx" rotation={[Math.PI / 2, 4, 0]}>
             <group name="Object_2">
               <group name="RootNode">

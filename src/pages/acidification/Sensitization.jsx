@@ -5,34 +5,50 @@ import { Environment, OrbitControls } from '@react-three/drei';
 import RotatingCamera from './RotatingCamera';
 import { useState, useEffect } from 'react';
 import Fish from './models/Fish';
+import Stones from './models/Stones';
+import { Physics, RigidBody } from '@react-three/rapier';
+import Alga from './models/Alga';
+
+const Floor = () => (
+  <RigidBody type="fixed">
+    <mesh position={[15, -14, -25]}>
+      <boxGeometry args={[20, 1, 20]} />
+      <meshStandardMaterial color="#1a1a1a"  transparent={true}/>
+    </mesh>
+  </RigidBody>
+);
 
 const EarthScene = ({ cameraPosition }) => {
   return (
-    <Canvas
-      shadows
-      camera={{ position: [0, 2, 12], fov: 45 }}
-      style={{
-        width: '100vw',
-        height: '100vh',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-      }}
-    >
-      <RotatingCamera cameraPosition={cameraPosition} />
-      <directionalLight
-        castShadow
-        intensity={2}
-        position={[0, 10, 0]}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-      />
-      <ambientLight />
-      <Fish/>
-      <OrbitControls enablePan={false} enableZoom={false} enableRotate={false} />
-      <Environment files="./hdr/UnderWater_A_4k.hdr" background />
-    </Canvas>
-  );
+      <Canvas
+        shadows
+        camera={{ position: [0, 2, 12], fov: 45 }}
+        style={{
+          width: '100vw',
+          height: '100vh',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+        }}
+      >
+        <Physics>
+          <RotatingCamera cameraPosition={cameraPosition} />
+          <directionalLight
+            castShadow
+            intensity={2}
+            position={[0, 10, 0]}
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
+          <ambientLight />
+          <Fish  />
+          <OrbitControls enablePan={false} enableZoom={false} enableRotate={false} />
+          <Environment files="./hdr/UnderWater_A_4k.hdr" background />
+          <Alga />
+        </Physics>
+      </Canvas>
+    );
+    
 };
 
 

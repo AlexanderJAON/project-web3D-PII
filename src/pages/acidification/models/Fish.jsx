@@ -2,6 +2,7 @@ import React, { useEffect, useRef,useState } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { Vector3 } from 'three';
+import { RigidBody } from '@react-three/rapier';
 
 const Fish = (props) => {
   const group = useRef();
@@ -9,6 +10,7 @@ const Fish = (props) => {
   const { actions } = useAnimations(animations, group);
   const direction = useRef(new Vector3(0.02, 0, 0)); 
   const initialRotation = [0, Math.PI / 2, 0]; 
+  
  
 
   useEffect(() => {
@@ -121,4 +123,4 @@ const Fish = (props) => {
 
 useGLTF.preload('models-3d/fish.glb');
 
-export default Fish;
+export default Fish; 
