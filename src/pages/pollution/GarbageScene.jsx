@@ -2,13 +2,13 @@ import React, { useRef } from 'react';
 import { Canvas, useFrame  } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import RotatingCamera from '../acidification/RotatingCamera';
-import Trash1 from '../pollution/models/trashmodels/Trash1';
-import Trash2 from '../pollution/models/trashmodels/Trash2';
-import Trash3 from '../pollution/models/trashmodels/Trash3';
-import Trash4 from '../pollution/models/trashmodels/Trash4';
-import Trash5 from '../pollution/models/trashmodels/Trash5';
-import Trash6 from '../pollution/models/trashmodels/Trash6';
-import Trash7 from '../pollution/models/trashmodels/Trash7';
+import Trash1 from './models/trashmodels/Trash1';
+import Trash2 from './models/trashmodels/Trash2';
+import Trash3 from './models/trashmodels/Trash3';
+import Trash4 from './models/trashmodels/Trash4';
+import Trash5 from './models/trashmodels/Trash5';
+import Trash6 from './models/trashmodels/Trash6';
+import Trash7 from './models/trashmodels/Trash7';
 import Fish from '../acidification/models/Fish';
 import OceanFloor from './models/trashmodels/OceanFloor';
 
@@ -39,7 +39,7 @@ const EarthScene = ({ cameraPosition }) => {
   };
   
   const generateTrash = () => {
-    const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash6, Trash7];
+    const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
     const trashElements = [];
     const trashCount = 120; // Incrementa la cantidad para más basura
   
