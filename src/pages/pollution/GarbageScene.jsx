@@ -1,80 +1,89 @@
-import React, { useRef } from 'react';
-import { Canvas, useFrame  } from '@react-three/fiber';
+import React, { useRef, useMemo } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
-import RotatingCamera from '../acidification/RotatingCamera';
+import { RigidBody, Physics } from "@react-three/rapier";
 import Trash1 from './models/trashmodels/Trash1';
 import Trash2 from './models/trashmodels/Trash2';
 import Trash3 from './models/trashmodels/Trash3';
 import Trash4 from './models/trashmodels/Trash4';
 import Trash5 from './models/trashmodels/Trash5';
-import Trash6 from './models/trashmodels/Trash6';
 import Trash7 from './models/trashmodels/Trash7';
 import Fish from '../acidification/models/Fish';
-import OceanFloor from './models/trashmodels/OceanFloor';
+import * as THREE from 'three';
 
-const EarthScene = ({ cameraPosition }) => {
+const InteractiveTrash = ({ TrashModel, position, rotation, scale }) => {
+  const ref = useRef();
 
-  const FloatingTrash = ({ TrashModel, position, rotation, scale }) => {
-    const ref = useRef();
-  
-    // Hook para animar la posición y rotación
-    useFrame(({ clock }) => {
-      const elapsedTime = clock.getElapsedTime();
-  
-      // Movimiento tipo flotación en el eje Y
-      if (ref.current) {
-        ref.current.position.y = position[1] + Math.sin(elapsedTime + position[0]) * 0.5;
-  
-        // Rotación lenta en los ejes
-        ref.current.rotation.x = rotation[0] + Math.sin(elapsedTime * 0.1) * 0.1;
-        ref.current.rotation.y = rotation[1] + Math.cos(elapsedTime * 0.1) * 0.1;
-      }
-    });
-  
-    return (
-      <group ref={ref} position={position} rotation={rotation} scale={scale}>
-        <TrashModel />
-      </group>
+  // Este es el evento cuando el ratón hace clic en el objeto
+  const handlePointerDown = (event) => {
+    event.stopPropagation();
+
+    // Aplica impulso inicial al objeto (empuje)
+    const impulseDirection = new THREE.Vector3(
+      (Math.random() - 0.5) * 2,
+      (Math.random() - 0.5) * 2,
+      (Math.random() - 0.5) * 2
+    ).normalize();
+
+    const impulse = impulseDirection.multiplyScalar(1); // Fuerza del empuje
+    ref.current.applyImpulse({ x: impulse.x, y: impulse.y, z: impulse.z }, true);
+  };
+
+  return (
+    <RigidBody ref={ref} position={position} rotation={rotation} colliders="cuboid">
+      <mesh
+        onPointerDown={handlePointerDown}
+        castShadow
+        receiveShadow
+      >
+        <TrashModel scale={scale} />
+      </mesh>
+    </RigidBody>
+  );
+};
+
+const generateTrash = () => {
+  const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
+  const trashElements = [];
+  const trashCount = 60; // Ajusta la cantidad de basura
+
+  for (let i = 0; i < trashCount; i++) {
+    const TrashModel = trashComponents[Math.floor(Math.random() * trashComponents.length)];
+    const position = [
+      (Math.random() - 0.5) * 10, // x posición
+      (Math.random() - 0.5) * 10, // y posición
+      (Math.random() - 0.5) * 10  // z posición
+    ];
+    const rotation = [
+      Math.random() * Math.PI,
+      Math.random() * Math.PI,
+      Math.random() * Math.PI
+    ];
+   
+
+    trashElements.push(
+      <InteractiveTrash
+        key={i}
+        TrashModel={TrashModel}
+        position={position}
+        rotation={rotation}
+        
+      />
     );
-  };
-  
-  const generateTrash = () => {
-    const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
-    const trashElements = [];
-    const trashCount = 220; // Incrementa la cantidad para más basura
-  
-    for (let i = 0; i < trashCount; i++) {
-      const Trash = trashComponents[Math.floor(Math.random() * trashComponents.length)];
-      const position = [
-        (Math.random() - 0.5) * 40, // x posición: rango más amplio
-        (Math.random() - 0.5) * 40, // y posición: rango amplio para dispersión vertical
-        (Math.random() - 0.5) * 40  // z posición: rango más amplio
-      ];
-      const rotation = [
-        Math.random() * Math.PI,   // x rotation
-        Math.random() * Math.PI,   // y rotation
-        Math.random() * Math.PI    // z rotation
-      ];
-      const scale = Math.random() * 0.5 + 0.5;
-  
-      trashElements.push(
-        <FloatingTrash
-          key={i}
-          TrashModel={Trash}
-          position={position}
-          rotation={rotation}
-          scale={scale}
-        />
-      );
-    }
-  
-    return trashElements;
-  };
+  }
+
+  return trashElements;
+};
+
+const EarthScene = () => {
+  const controlsRef = useRef();
+
+  // Genera los modelos de basura solo una vez
+  const trashElements = useMemo(() => generateTrash(), []);
 
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 2, 12], fov: 45 }}
       style={{
         width: '100vw',
         height: '100vh',
@@ -83,19 +92,25 @@ const EarthScene = ({ cameraPosition }) => {
         left: 0,
       }}
     >
-
-      <RotatingCamera cameraPosition={cameraPosition || [0, 2, 12]} />
-      <directionalLight
-        castShadow
-        intensity={2}
-        position={[0, 10, 0]}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+      <Physics gravity={[0, 0, 0]}>
+        <directionalLight
+          castShadow
+          intensity={2}
+          position={[0, 10, 0]}
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+        />
+        <ambientLight />
+        <Fish />
+        {trashElements}
+      </Physics>
+      <OrbitControls
+        ref={controlsRef}
+        enablePan={true}
+        enableZoom={true}
+        enableRotate={true} // Mantiene el control de la cámara
+        makeDefault
       />
-      <ambientLight />
-      <Fish />
-      {generateTrash()}
-      <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
       <Environment files="./hdr/UNDERWATER.hdr" background />
     </Canvas>
   );

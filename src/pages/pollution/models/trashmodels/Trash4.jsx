@@ -5,7 +5,7 @@ const Trash4 = forwardRef((props, ref) => {
   const { nodes,materials } = useGLTF("models-3d/trashmodels/trash4.glb");
   const group = useRef()
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} scale={0.3}>
     <group name="Sketchfab_Scene">
       <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
         <group name="root">
