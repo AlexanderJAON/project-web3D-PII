@@ -1,6 +1,6 @@
 import React, { useEffect, useState  } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { Environment, OrbitControls } from '@react-three/drei';
 import Island from './models/Island';
 import PileTrash from './models/PileTrash';
 import Exclamation from './models/Exclamation_point';
@@ -59,16 +59,14 @@ const EarthScene = () => {
     <Canvas 
       shadows 
       camera={{ position: [0, 120, 150], fov: 60 }}
-      style={{ background: 'linear-gradient(#aad1e7, #063149)' }}>
+      >
         <directionalLight
           castShadow
-          intensity={2}
-          position={[0, 10, 0]}
+          intensity={0.2}
+          position={[0, 20, 400]}
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
         />
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
         <Island />
         <OrbitControls />
         <CameraControls /> {/* Agrega los controles de cámara aquí */}
@@ -81,21 +79,10 @@ const EarthScene = () => {
             Descubre
           </div>
         </Html>
-
-        {/* Popup that appears on click */}
-        {showPopup && (
-          <Html position={[0, 50, 0]} center>
-            <div style={{
-              padding: '20px', background: 'rgba(0, 0, 0, 0.8)', color: '#ffffff',
-              borderRadius: '8px', fontSize: '1.5rem', textAlign: 'center'
-            }}>
-              Próximamente
-            </div>
-          </Html>
-        )}
         <Exclamation position={[-177 , 10 , 20 ]} onClick={goToGarbageScene}/>
         <PileTrash position={[-160 , 1.4 , 40 ]} rotation={[0, Math.PI / 3.7, 0]} />
         <PileTrash position={[-125 , 1.4 , -20 ]} rotation={[0, Math.PI / 1, 0]} />
+        <Environment files="./hdr/sky3.hdr" background />
     </Canvas>
   );
 };
@@ -124,7 +111,7 @@ const Pollution = () => {
           </h1>
           <p style={{
             fontSize: '1.2rem', maxWidth: '700px', margin: '20px auto 0', fontFamily: 'Impact Club',
-            textAlign: 'center', color: '#7fe00a'  
+            textAlign: 'center', color: 'black'  
           }} className="fade-in">
             La contaminación del agua es uno de los mayores desafíos medioambientales. Desde residuos plásticos hasta productos químicos tóxicos, nuestros ríos, lagos y océanos se enfrentan a una crisis sin precedentes. Más de 2 mil millones de personas carecen de acceso a agua potable, y los ecosistemas acuáticos sufren un deterioro irreversible.
           </p>
@@ -134,16 +121,6 @@ const Pollution = () => {
       {/* Escena 3D con la funcionalidad de exclamación y texto emergente */}
       <EarthScene onExclamationClick={handleExclamationClick} />
 
-      {/* Recuadro emergente "Próximamente" */}
-      {showPopup && (
-        <div style={{
-          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-          padding: '20px', background: 'rgba(0, 0, 0, 0.8)', color: '#ffffff',
-          borderRadius: '8px', fontSize: '1.5rem', textAlign: 'center', zIndex: 2
-        }}>
-          Próximamente
-        </div>
-      )}
     </div>
   );
 };
