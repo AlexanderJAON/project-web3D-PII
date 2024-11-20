@@ -5,6 +5,7 @@ import Island from './models/Island';
 import PileTrash from './models/PileTrash';
 import Exclamation from './models/Exclamation_point';
 import { Html } from '@react-three/drei';
+import { useNavigate } from 'react-router-dom';
 
 function CameraControls() {
   const { camera } = useThree();
@@ -42,12 +43,17 @@ function CameraControls() {
 }
 
 const EarthScene = () => {
+  const navigate = useNavigate();
 
   const [showPopup, setShowPopup] = useState(false);
 
   const handleExclamationClick = () => {
     setShowPopup(true);
   }; 
+
+  const goToGarbageScene = () => {
+    navigate("/GarbageScene");
+  };
   
   return (
     <Canvas 
@@ -87,7 +93,7 @@ const EarthScene = () => {
             </div>
           </Html>
         )}
-        <Exclamation position={[-177 , 10 , 20 ]} />
+        <Exclamation position={[-177 , 10 , 20 ]} onClick={goToGarbageScene}/>
         <PileTrash position={[-160 , 1.4 , 40 ]} rotation={[0, Math.PI / 3.7, 0]} />
         <PileTrash position={[-125 , 1.4 , -20 ]} rotation={[0, Math.PI / 1, 0]} />
     </Canvas>

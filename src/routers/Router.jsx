@@ -8,6 +8,7 @@ import Shortage from "../pages/shortage/Shortage";
 import Pollution from "../pages/pollution/Pollution";
 import Sensitization from "../pages/acidification/Sensitization";
 import Awareness from "../pages/shortage/Awareness";
+import GarbageScene from "../pages/pollution/GarbageScene";
 import Menu from "../components/Menu"; // Importa el componente Menu
 
 const Router = createBrowserRouter([
@@ -70,7 +71,17 @@ const Router = createBrowserRouter([
                 <ProtectedRoute><Awareness /></ProtectedRoute>
             </>
         )
+    },
+    {
+        path: "/GarbageScene",
+        element: (
+            <>
+                <Menu />
+                <ProtectedRoute><GarbageScene /></ProtectedRoute>
+            </>
+        )
     }
+
 ]);
 
 export default Router;
