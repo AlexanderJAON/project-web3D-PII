@@ -41,14 +41,14 @@ const EarthScene = ({ cameraPosition }) => {
   const generateTrash = () => {
     const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
     const trashElements = [];
-    const trashCount = 120; // Incrementa la cantidad para más basura
+    const trashCount = 220; // Incrementa la cantidad para más basura
   
     for (let i = 0; i < trashCount; i++) {
       const Trash = trashComponents[Math.floor(Math.random() * trashComponents.length)];
       const position = [
-        (Math.random() - 0.5) * 30, // x posición: rango más amplio
-        (Math.random() - 0.5) * 30, // y posición: rango amplio para dispersión vertical
-        (Math.random() - 0.5) * 30  // z posición: rango más amplio
+        (Math.random() - 0.5) * 40, // x posición: rango más amplio
+        (Math.random() - 0.5) * 40, // y posición: rango amplio para dispersión vertical
+        (Math.random() - 0.5) * 40  // z posición: rango más amplio
       ];
       const rotation = [
         Math.random() * Math.PI,   // x rotation
@@ -94,10 +94,9 @@ const EarthScene = ({ cameraPosition }) => {
       />
       <ambientLight />
       <Fish />
-      <OceanFloor position={[0, -220 , 0]} />
       {generateTrash()}
       <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
-      <Environment files="./hdr/UnderOcean.hdr" background />
+      <Environment files="./hdr/UNDERWATER.hdr" background />
     </Canvas>
   );
 };
