@@ -10,12 +10,50 @@
   }
 
 
-  nav {
+  .nav {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
+    height: 25px; /* Altura delgada */
+    padding: 0;
     z-index: 1000;
+    background: linear-gradient(
+      to left,
+      rgba(0, 51, 102, 0.1), /* Azul muy oscuro y transparente a la izquierda */
+      rgba(0, 76, 153, 0.5), /* Azul intermedio */
+      rgba(0, 102, 204, 0.9) 50%, /* Azul oscuro intenso en el centro */
+      rgba(0, 76, 153, 0.5), /* Azul intermedio */
+      rgba(0, 51, 102, 0.1) /* Azul muy oscuro y transparente a la derecha */
+    );
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centra los botones verticalmente */
+  }
+  
+  .menu {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px; /* Limita el ancho del menú */
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  .menu-button {
+    flex: 1; /* Cada botón ocupa el mismo espacio */
+    margin: 0 5px;
+    padding: 5px 0; /* Ajuste para encajar con la altura del menú */
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo ligeramente visible */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    font-size: 12px; /* Fuente más pequeña para adaptarse al espacio */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Más visible al pasar el cursor */
+    transform: scale(1.05); /* Ligero aumento al pasar el mouse */
   }
