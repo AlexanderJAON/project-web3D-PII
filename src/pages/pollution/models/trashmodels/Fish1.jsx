@@ -1,7 +1,7 @@
 import React, { useRef, forwardRef, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 
-const SharkAnimated = forwardRef((props, ref) => {
+const Fish1 = forwardRef((props, ref) => {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF("models-3d/trashmodels/sharkAnimated.glb");
   const { actions } = useAnimations(animations, group);
@@ -61,5 +61,5 @@ const SharkAnimated = forwardRef((props, ref) => {
   );
 });
 
-export default SharkAnimated;
+export default Fish1;
 useGLTF.preload("models-3d/trashmodels/sharkAnimated.glb");

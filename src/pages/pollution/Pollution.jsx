@@ -155,34 +155,8 @@ const Pollution = () => {
         </div>
       )}
 
-      {/* Escena 3D con funcionalidad */}
+      
       <EarthScene onExclamationClick={handleExclamationClick} />
-
-      {/* Popup */}
-      {showPopup && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 2,
-            background: "white",
-            padding: "20px",
-            borderRadius: "10px",
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-            textAlign: "center",
-          }}
-        >
-          <h2>Próximamente</h2>
-          <button
-            onClick={() => setShowPopup(false)}
-            style={{ marginTop: "10px" }}
-          >
-            Cerrar
-          </button>
-        </div>
-      )}
     </div>
   );
 };
