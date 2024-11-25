@@ -4,6 +4,7 @@ import { Environment, OrbitControls, Stars, useTexture } from '@react-three/drei
 import Tortoise from './models/Tortoise';
 import OceanFloor from './models/OceanFloor';
 import { useNavigate } from 'react-router-dom';
+import Fish2 from './models/Fish2';
 
 
 const EarthScene = () => {
@@ -27,6 +28,7 @@ const EarthScene = () => {
       <Stars />
         <Tortoise castShadow onClick={() => window.open('https://youtu.be/HOIB_Yda8Xo?si=Ad9tT-ECet9TlWvD', '_blank')} />
       <OceanFloor position={[0, -2.3, 0]} />
+      
     </Canvas>
   );
   
@@ -48,7 +50,7 @@ const Acidification = () => {
       <div 
         style={{ 
           position: 'absolute', 
-          top: '7%',  // Ajusta este valor para mover el texto hacia abajo
+          top: '7%', 
           width: '100%', 
           color: 'black', 
           textAlign: 'center', 
