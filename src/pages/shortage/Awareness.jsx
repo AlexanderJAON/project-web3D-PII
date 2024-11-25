@@ -7,6 +7,8 @@ import "./Awareness.css";
 import WelcomeText from "./WelcomeText";
 import { Physics } from "@react-three/rapier";
 import Staging from "./staging/Staging";
+import SheriffCactus from "./models/SheriffCactus";
+import HappyCactus from "./models/HappyCactus";
 
 const EarthSceneAwa = () => {
   return (
@@ -25,9 +27,11 @@ const EarthSceneAwa = () => {
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <WelcomeText/>
-      <Physics>
-      <Desert position={[-18.4, -2, 9]} rotation={[-0.2, 1.6, 0]} recieveShadows/>
-      <Lizard castShadow position={[-18.4, 1, 9]} />
+      <Physics debug>
+      <Desert position={[-18.4, 0, 9]} rotation={[-0.2, 1.6, 0]} recieveShadows/>
+      <Lizard castShadow position={[-18.4, 10, 9]} />
+      <SheriffCactus position={[-15, 10, 9]}/>
+      <HappyCactus position={[-30, 10, 9]}/>
       <Staging/>
       </Physics>
       
@@ -79,7 +83,7 @@ const Awareness = () => {
   return (
     <div className="conteiner-awareness">
         
-      {isPopupVisible && (
+      {/* {isPopupVisible && (
         <div className="popup">
           <div className="popup-content">
           <img src="/images/lizard-pepe.png" class= "img-lizard" width="80px" height="100px" alt=""></img>
@@ -92,7 +96,7 @@ const Awareness = () => {
           </div>
           
         </div>
-      )}
+      )} */}
 
       <KeyboardControls map={map}>
         <EarthSceneAwa />

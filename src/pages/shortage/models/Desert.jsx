@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
-import { RigidBody } from '@react-three/rapier';
+import { BallCollider, CuboidCollider, RigidBody } from '@react-three/rapier';
 
 const Desert = (props)=>{
     const group = useRef();
@@ -8,7 +8,7 @@ const Desert = (props)=>{
     const {actions} = useAnimations(animations,group);
 
     return (
-      <RigidBody type='fixed' colliders="trimesh">
+      <RigidBody type="fixed" colliders="trimesh">
         <group {...props} dispose={null} scale={50.2}>
           <group name="Scene">
             <group name="Desert" position={[0, 0.637, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -107,6 +107,7 @@ const Desert = (props)=>{
             />
           </group>
         </group>
+
         </RigidBody>
       )
 }

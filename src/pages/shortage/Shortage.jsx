@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { Html, OrbitControls } from "@react-three/drei";
 import MantaRay from "./models/MantaRay";
 import MiniOcean from "./models/MiniOcean";
 import "./Shortage.css";
@@ -8,7 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 
 const EarthScene = () => {
+  const [hovered, setHovered] = useState(false);
+  const description = {
+    mantaray: "Da click sobre mí",
+  };
   return (
+    
     <Canvas shadows camera={{ position: [-1, 0, 17], fov: 55 }}>
       <directionalLight
         castShadow
@@ -19,8 +24,14 @@ const EarthScene = () => {
       />
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-      <MantaRay castShadow position={[-1, -5.2, 0]} onClick={() => window.open('https://youtu.be/2qxhlCuTe4w?si=gj_XhZsGQLzpevBt', '_blank')} />
-      <MiniOcean position={[0, -10.2, 0]} />
+      <MantaRay castShadow position={[0, -5.2, 0]} onClick={() => window.open('https://youtu.be/2qxhlCuTe4w?si=gj_XhZsGQLzpevBt', '_blank')} onPointerOver={() => setHovered("mantaray")}
+          onPointerOut={() => setHovered(null)} />
+          {hovered === "mantaray" && (
+            <Html position={[-5, -2, 0]} distanceFactor={30} style={{ pointerEvents: 'none', color: '#82dd99',  padding: '1px', borderRadius: '5px', fontFamily: 'Impact Club', whiteSpace: "nowrap", width: "auto", fontSize: "1.2em",}}>
+              {description.mantaray}
+            </Html>
+          )}
+      <MiniOcean position={[1, -10.2, 0]} />
       <OrbitControls />
     </Canvas>
   );
@@ -63,9 +74,6 @@ const Shortage = () => {
           nuestro tiempo.
         </p>
         <button className="btn-awareness" onClick={goToAwareness}> continuar </button>
-        <h2 style={{ fontSize: "2rem", color: 'white',  margin: "20px 0" }} className="fade-in">
-          Da click sobre mi
-        </h2>
       </div>
       <EarthScene />
     </div>
