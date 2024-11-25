@@ -1,6 +1,6 @@
 import { useAnimations, useGLTF, useKeyboardControls } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
-import { RigidBody } from "@react-three/rapier"
+import { CuboidCollider, RigidBody } from "@react-three/rapier"
 import { useEffect, useRef } from "react"
 
 const Lizard = (props)=>{
@@ -9,6 +9,7 @@ const Lizard = (props)=>{
   const { actions } = useAnimations(animations, lizardRef)
 
   const [sub, get] = useKeyboardControls();
+  
   
 
   useEffect(()=>{ 
@@ -26,25 +27,27 @@ const Lizard = (props)=>{
     const {forward, back, left, right} = get();
 
 
-    if (forward){
+    if (right){
       lizardRef.current.position.x += 2*delta
     }
 
-    if(back){
+    if(left){
       lizardRef.current.position.x -= 2*delta
     }
 
-    if(left){
+    if(forward){
       lizardRef.current.position.z += 2*delta
     }
 
-    if(right){
+    if(back){
       lizardRef.current.position.z -= 2*delta
     }
   
     const pressed = get().back;
     
   });
+
+  
 
   useEffect(() => {
     if (actions) {
@@ -58,10 +61,12 @@ const Lizard = (props)=>{
     }
   }, [actions]);
 
+  
+
   return (
-    <RigidBody type="dynamic" colliders="cuboid">
+    <RigidBody colliders={false} >
    
-    <group ref = {lizardRef} {...props} dispose={null}>
+    <group ref = {lizardRef} position={[0, -1, 0]} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group 
@@ -81,13 +86,13 @@ const Lizard = (props)=>{
                     name="Object_6"
                     position={[0, 32.761, 0]}
                     rotation={[-Math.PI / 2, 0, -1.568]}
-                    scale={39.37}
+                    scale={0.1}
                   />
                   <group
                     name="model"
                     position={[0, 32.761, 0]}
                     rotation={[-Math.PI / 2, 0, -1.568]}
-                    scale={39.37}
+                    scale={0.1}
                   />
                 </group>
               </group>
@@ -96,6 +101,7 @@ const Lizard = (props)=>{
         </group>
       </group>
     </group>
+    <CuboidCollider args={[3, 0.2, 3]} position={props.position}/>
     </RigidBody>
   )
   
