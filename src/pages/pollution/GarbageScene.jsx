@@ -8,34 +8,47 @@ import Trash3 from "./models/trashmodels/Trash3";
 import Trash4 from "./models/trashmodels/Trash4";
 import Trash5 from "./models/trashmodels/Trash5";
 import Trash7 from "./models/trashmodels/Trash7";
-import SharkAnimated from "./models/trashmodels/SharkAnimated"; // Importamos el modelo de tiburón
-import Fish from "../acidification/models/Fish"
+import Fish1 from "./models/trashmodels/Fish1"; // Modelo de tiburón
 import * as THREE from "three";
 
-// Componente que maneja la interacción con el objeto de basura (y genera tiburones)
-const InteractiveTrash = ({ TrashModel, position, rotation, scale, onRightClick }) => {
+// Componente de basura interactiva
+const InteractiveTrash = ({
+  TrashModel,
+  position,
+  rotation,
+  scale,
+  onRightClick,
+}) => {
   const ref = useRef();
 
   const handlePointerDown = (event) => {
     event.stopPropagation();
     if (event.button === 2) {
       // Clic derecho
-      onRightClick(); // Llamamos a la función para eliminar todos los modelos de ese tipo y generar tiburones
+      onRightClick(position);
     } else {
-      // Aplica impulso inicial al objeto (empuje)
+      // Aplica impulso inicial al objeto
       const impulseDirection = new THREE.Vector3(
         (Math.random() - 0.5) * 2,
         (Math.random() - 0.5) * 2,
         (Math.random() - 0.5) * 2
       ).normalize();
 
-      const impulse = impulseDirection.multiplyScalar(1); // Fuerza del empuje
-      ref.current.applyImpulse({ x: impulse.x, y: impulse.y, z: impulse.z }, true);
+      const impulse = impulseDirection.multiplyScalar(1);
+      ref.current.applyImpulse(
+        { x: impulse.x, y: impulse.y, z: impulse.z },
+        true
+      );
     }
   };
 
   return (
-    <RigidBody ref={ref} position={position} rotation={rotation} colliders="cuboid">
+    <RigidBody
+      ref={ref}
+      position={position}
+      rotation={rotation}
+      colliders="cuboid"
+    >
       <mesh onPointerDown={handlePointerDown} castShadow receiveShadow>
         <TrashModel scale={scale} />
       </mesh>
@@ -43,15 +56,16 @@ const InteractiveTrash = ({ TrashModel, position, rotation, scale, onRightClick 
   );
 };
 
-// Función para generar basura aleatoria
+// Genera basura aleatoria
 const generateTrash = (trashComponents, trashCount) => {
   const trashElements = [];
   for (let i = 0; i < trashCount; i++) {
-    const TrashModel = trashComponents[Math.floor(Math.random() * trashComponents.length)];
+    const TrashModel =
+      trashComponents[Math.floor(Math.random() * trashComponents.length)];
     const position = [
-      (Math.random() - 0.5) * 10, // x posición
-      (Math.random() - 0.5) * 10, // y posición
-      (Math.random() - 0.5) * 10, // z posición
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 10,
     ];
     const rotation = [
       Math.random() * Math.PI,
@@ -60,105 +74,152 @@ const generateTrash = (trashComponents, trashCount) => {
     ];
     const scale = Math.random() * 0.5 + 0.5;
 
-    trashElements.push({
-      TrashModel,
-      position,
-      rotation,
-      scale,
-    });
+    trashElements.push({ TrashModel, position, rotation, scale });
   }
   return trashElements;
 };
 
 const EarthScene = () => {
-  const [trashElements, setTrashElements] = useState([]); // Elementos de basura
-  const [sharkElements, setSharkElements] = useState([]); // Elementos de tiburones
+  const [trashElements, setTrashElements] = useState([]);
+  const [fishElements, setFishElements] = useState([]);
+  const [topicIndex, setTopicIndex] = useState(0);
+  const [cameraPosition, setCameraPosition] = useState([12, 2, 0]);
+  const [fishCounter, setFishCounter] = useState(1);
   const controlsRef = useRef();
 
   const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
+  const fishComponents = [Fish1, ];
   const trashCount = 60;
 
-  // Generamos los elementos de basura solo una vez, al montar el componente
+  const messages = [
+    {
+      title: "Efectos de la Basura en el Agua",
+      text: "Los desechos plásticos y químicos contaminan los ríos y océanos, afectando la biodiversidad acuática.",
+    },
+    {
+      title: "Impacto en los Ecosistemas",
+      text: "La basura genera zonas muertas en los océanos, donde no puede sobrevivir la vida marina.",
+    },
+    {
+      title: "Responsabilidad Humana",
+      text: "El 80% de la contaminación marina proviene de actividades terrestres, como desechos mal gestionados.",
+    },
+    {
+      title: "Interacción con la Basura",
+      text: "Puedes interactuar con la basura. Haz clic izquierdo para empujarla y clic derecho para limpiarla y descubrir algo nuevo.",
+    },
+  ];
+
   useEffect(() => {
     const generatedTrash = generateTrash(trashComponents, trashCount);
     setTrashElements(generatedTrash);
   }, []);
 
-  // Función que se llama al hacer clic derecho sobre un objeto de basura
-  const handleRightClick = (TrashModel) => {
-    // Eliminar todos los modelos de ese tipo de la escena
-    setTrashElements((prevTrashElements) =>
-      prevTrashElements.filter((item) => item.TrashModel !== TrashModel)
-    );
+  useEffect(() => {
+    if (controlsRef.current) {
+      controlsRef.current.target.set(0, 0, 0);
+      controlsRef.current.object.position.set(...cameraPosition);
+      controlsRef.current.update();
+    }
+  }, [cameraPosition]);
 
-    // Añadir el modelo de SharkAnimated al hacer clic derecho
-    // const newSharks = [];
-    // const sharkCount = 1; // Generamos un tiburón por cada clic derecho
+  const updateTopic = (direction) => {
+    const newIndex = (topicIndex + direction + messages.length) % messages.length;
+    setTopicIndex(newIndex);
 
-    // for (let i = 0; i < sharkCount; i++) {
-    //   newSharks.push(
-    //     <SharkAnimated
-    //       key={`shark-${i}-${Math.random()}`} // Usamos índice y un valor aleatorio para evitar duplicados
-    //       position={[ // Posición aleatoria del tiburón
-    //         (Math.random() - 0.5) * 10,
-    //         (Math.random() - 0.5) * 10,
-    //         (Math.random() - 0.5) * 10,
-    //       ]}
-    //     />
-    //   );
-    // }
-
-    // setSharkElements((prevSharks) => [...prevSharks, ...newSharks]); // Agregamos los nuevos tiburones a la lista de tiburones
+    setCameraPosition([
+      Math.cos((newIndex * (2 * Math.PI)) / messages.length) * 12,
+      2,
+      Math.sin((newIndex * (2 * Math.PI)) / messages.length) * 12,
+    ]);
   };
 
-  return (
-    <Canvas
-      shadows
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "absolute",
-        top: 0,
-        left: 0,
-      }}
-    >
-      <Physics gravity={[0, 0, 0]}>
-        <directionalLight
-          castShadow
-          intensity={2}
-          position={[0, 10, 0]}
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
-        />
-        <ambientLight />
-        
-        
-       
-        {trashElements.map((element, i) => (
-          <InteractiveTrash
-            key={i}
-            TrashModel={element.TrashModel}
-            position={element.position}
-            rotation={element.rotation}
-            scale={element.scale}
-            onRightClick={() => handleRightClick(element.TrashModel)} // Cuando se hace clic derecho, se eliminan los modelos de basura y se generan tiburones
-          />
-        ))}
-      </Physics>
+  const handleRightClick = (TrashModel) => {
+    // Filtra los elementos de basura para eliminar los del tipo clicado
+    setTrashElements((prev) => prev.filter((item) => item.TrashModel !== TrashModel));
 
-      <SharkAnimated position={[10,0,0]}/>
-      <Fish/>
-      
-      <OrbitControls
-        ref={controlsRef}
-        enablePan={true}
-        enableZoom={true}
-        enableRotate={true} // Mantiene el control de la cámara
-        makeDefault
-      />
-      <Environment files="./hdr/UNDERWATER.hdr" background />
-      
-    </Canvas>
+    // Selecciona un pez aleatorio
+    const FishModel = fishComponents[Math.floor(Math.random() * fishComponents.length)];
+    const position = [
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 10,
+    ];
+
+    // Agrega el nuevo pez al estado
+    setFishElements((prev) => [...prev, { FishModel, position }]);
+  };
+  return (
+    <div style={{ position: "relative", height: "100vh" }}>
+      {topicIndex < messages.length && (
+        <div
+          style={{
+            position: "absolute",
+            top: "30%",
+            left: "3%",
+            zIndex: 10,
+            background: "rgba(0, 0, 0, 0.7)",
+            padding: "20px",
+            borderRadius: "10px",
+            color: "white",
+            maxWidth: "300px",
+          }}
+        >
+          <h1 style={{ fontSize: "3rem", margin: "10px 0"  }}>{messages[topicIndex].title}</h1>
+          <p style={{ fontSize: "1.2rem" }}>{messages[topicIndex].text}</p>
+          <button
+            style={{
+              marginTop: "10px",
+              padding: "10px 20px",
+              background: "#09bc86",
+              border: "none",
+              borderRadius: "5px",
+              color: "white",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              if (topicIndex === messages.length - 1) {
+                setTopicIndex(messages.length); // Cierra el cuadro
+              } else {
+                updateTopic(1);
+              }
+            }}
+          >
+            {topicIndex === messages.length - 1 ? "¡Vamos!" : "Siguiente"}
+          </button>
+        </div>
+      )}
+
+      <Canvas shadows style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0 }}>
+        <Physics gravity={[0, 0, 0]}>
+          <directionalLight castShadow intensity={2} position={[0, 10, 0]} shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+          <ambientLight />
+
+          {/* Renderizar basura */}
+          {trashElements.map((element, i) => (
+            <InteractiveTrash
+              key={i}
+              TrashModel={element.TrashModel}
+              position={element.position}
+              rotation={element.rotation}
+              scale={element.scale}
+              onRightClick={() => handleRightClick(element.TrashModel)}
+            />
+          ))}
+
+          {/* Renderizar peces */}
+          {fishElements.map((fish, i) => (
+            <RigidBody key={i} position={fish.position} colliders="hull">
+              <fish.FishModel />
+            </RigidBody>
+          ))}
+
+        </Physics>
+
+        <OrbitControls ref={controlsRef} enablePan enableZoom enableRotate makeDefault />
+        <Environment files="./hdr/UNDERWATER.hdr" background />
+      </Canvas>
+    </div>
   );
 };
 
