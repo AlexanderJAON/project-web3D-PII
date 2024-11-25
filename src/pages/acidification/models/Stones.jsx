@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 
 const Stones = (props) => {
   const { nodes, materials } = useGLTF('models-3d/stones.glb');
 
+  // Referencias para los RigidBody
+  const stoneRef1 = useRef(null);
+  const stoneRef2 = useRef(null);
+  const stoneRef3 = useRef(null);
+  const stoneRef4 = useRef(null);
+
+  // Función para aplicar impulso
+  const handleClick = (stoneRef) => {
+    if (stoneRef.current) {
+      // Aplica un impulso aleatorio
+      const impulse = {
+        x: (Math.random() - 0.5) * 10, // Variación aleatoria en X
+        y: (Math.random() - 0.5) * 10, // Variación aleatoria en Y
+        z: (Math.random() - 0.5) * 10, // Variación aleatoria en Z
+      };
+      stoneRef.current.applyImpulse(impulse, true); // Aplica el impulso
+    }
+  };
+
   return (
     <group {...props} dispose={null}>
-      <group scale={0.05} position={[14, -14, -20]}>
-        <RigidBody type="dynamic" mass={5} colliders="hull">
+      <group scale={0.02} position={[10, -3, -8]}>
+        <RigidBody ref={stoneRef1} type="dynamic" mass={5} colliders="hull" gravityScale={0} onClick={() => handleClick(stoneRef1)}>
           <mesh
             castShadow
             receiveShadow
@@ -19,7 +38,8 @@ const Stones = (props) => {
             scale={100}
           />
         </RigidBody>
-        <RigidBody type="dynamic" mass={5} colliders="hull">
+
+        <RigidBody ref={stoneRef2} type="dynamic" mass={5} colliders="hull" gravityScale={0} onClick={() => handleClick(stoneRef2)}>
           <mesh
             castShadow
             receiveShadow
@@ -30,7 +50,8 @@ const Stones = (props) => {
             scale={100}
           />
         </RigidBody>
-        <RigidBody type="dynamic" mass={5} colliders="hull">
+
+        <RigidBody ref={stoneRef3} type="dynamic" mass={5} colliders="hull" gravityScale={0} onClick={() => handleClick(stoneRef3)}>
           <mesh
             castShadow
             receiveShadow
@@ -41,7 +62,8 @@ const Stones = (props) => {
             scale={100}
           />
         </RigidBody>
-        <RigidBody type="dynamic" mass={5} colliders="hull">
+
+        <RigidBody ref={stoneRef4} type="dynamic" mass={5} colliders="hull" gravityScale={0} onClick={() => handleClick(stoneRef4)}>
           <mesh
             castShadow
             receiveShadow
@@ -52,7 +74,6 @@ const Stones = (props) => {
             scale={100}
           />
         </RigidBody>
-        {/* Agrega más RigidBodies para las otras rocas */}
       </group>
     </group>
   );
