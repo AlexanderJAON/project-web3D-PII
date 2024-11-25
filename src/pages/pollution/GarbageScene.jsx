@@ -155,8 +155,8 @@ const EarthScene = () => {
         <div
           style={{
             position: "absolute",
-            top: "10%",
-            left: "10%",
+            top: "30%",
+            left: "3%",
             zIndex: 10,
             background: "rgba(0, 0, 0, 0.7)",
             padding: "20px",
@@ -165,8 +165,8 @@ const EarthScene = () => {
             maxWidth: "300px",
           }}
         >
-          <h1 style={{ fontSize: "1.5rem", margin: "10px 0" }}>{messages[topicIndex].title}</h1>
-          <p>{messages[topicIndex].text}</p>
+          <h1 style={{ fontSize: "3rem", margin: "10px 0"  }}>{messages[topicIndex].title}</h1>
+          <p style={{ fontSize: "1.2rem" }}>{messages[topicIndex].text}</p>
           <button
             style={{
               marginTop: "10px",
