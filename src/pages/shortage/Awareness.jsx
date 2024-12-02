@@ -34,7 +34,7 @@ const EarthSceneAwa = () => {
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <WelcomeText/>
-      <Physics >
+      <Physics debug>
       <Desert position={[-18.4, 0, 9]} rotation={[-0.2, 1.6, 0]} recieveShadows/>
       <Lizard castShadow position={[-18.4, 10, 7]} />
       <SheriffCactus position={[-37, 17, 30]} onPointerOver={() => setHovered("sheriffCactus")}
