@@ -101,7 +101,7 @@ const Lizard = (props)=>{
         </group>
       </group>
     </group>
-    <CuboidCollider args={[3, 0.2, 3]} position={props.position}/>
+    <CuboidCollider args={[3, 3, 3]} position={[-18.4, 13, 7]}/>
     </RigidBody>
   )
   
