@@ -10,6 +10,8 @@ import Sensitization from "../pages/acidification/Sensitization";
 import Awareness from "../pages/shortage/Awareness";
 import GarbageScene from "../pages/pollution/GarbageScene";
 import Menu from "../components/Menu"; // Importa el componente Menu
+import Quiz from "../pages/quiz/Quiz";
+
 
 const Router = createBrowserRouter([
     {
@@ -80,7 +82,17 @@ const Router = createBrowserRouter([
                 <ProtectedRoute><GarbageScene /></ProtectedRoute>
             </>
         )
-    }
+    },
+
+    {
+        path: "/quiz",
+        element: (
+            <>
+                <Menu />
+                <ProtectedRoute><Quiz/></ProtectedRoute>
+            </>
+        )
+    },
 
 ]);
 

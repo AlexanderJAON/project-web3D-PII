@@ -65,7 +65,7 @@ const Home = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [startMoving, setStartMoving] = useState(false);
-  const [hoveredModel, setHoveredModel] = useState(null); // Estado para almacenar el modelo que está siendo hovereado
+  const [hoveredModel, setHoveredModel] = useState(null); 
   const [showIntroduction, setShowIntroduction] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   useEffect(() => {
@@ -93,6 +93,9 @@ const Home = () => {
     navigate("/pollution");
   };
 
+  const goToQuiz = () => {
+    navigate("/quiz");
+  };
   useEffect(() => {
     const timer = setTimeout(() => setStartMoving(true), 1000);
     return () => clearTimeout(timer);
@@ -238,6 +241,16 @@ const Home = () => {
             onPointerOut={() => setHoveredModel(null)}/>
           </FloatingAnimation>
           {hoveredModel === "pollution" && (
+            <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+              {descriptions.pollution}
+            </Html>
+          )}
+
+           <FloatingAnimation frequency={1.8} amplitude={0.4}>
+            <Trash position={[50, -33, 40]} onClick={goToQuiz} onPointerOver={() => setHoveredModel("quiz")}
+            onPointerOut={() => setHoveredModel(null)}/>
+          </FloatingAnimation>
+          {hoveredModel === "quiz" && (
             <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
               {descriptions.pollution}
             </Html>
