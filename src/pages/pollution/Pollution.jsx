@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Island from "./models/Island";
 import PileTrash from "./models/PileTrash";
 import Exclamation from "./models/Exclamation_point";
+import Pipe from "./models/Pipe";
+import Liquid from "./models/Liquid";
+import Tree from "./models/Tree";
+
 
 function CameraControls() {
   const { camera } = useThree();
@@ -80,6 +84,41 @@ const EarthScene = ({ onExclamationClick }) => {
       <Exclamation position={[-177, 10, 20]} onClick={goToGarbageScene} />
       <PileTrash position={[-160, 1.4, 40]} rotation={[0, Math.PI / 3.7, 0]} />
       <PileTrash position={[-125, 1.4, -20]} rotation={[0, Math.PI / 1, 0]} />
+      <Pipe position={[140, 4 , 106]} rotation={[0, Math.PI / 0.6, 0]}/>
+      <Liquid position={[146.1, -15 , 120]} rotation={[0, Math.PI / 7, 0]} />
+      <Liquid position={[147, 8 , 138]} rotation={[Math.PI, Math.PI / 7, 0]} />
+      <Exclamation position={[145, 20 , 115]} onClick={goToGarbageScene} />
+      <Html position={[145, 30 , 115]} center>
+        <div
+          style={{
+            color: "#ff0000",
+            fontSize: "2rem",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          Descubre
+        </div>
+      </Html>
+      <Tree position={[10, 0 , -100]}/>
+      <Tree position={[25, 1 , -110]}/>
+      <Tree position={[16, 2 , -112]}/>
+      <Tree position={[20, -1 , -120]}/>
+      <Tree position={[3, 2 , -100]}/>
+      <Tree position={[3, 1 , -128]}/>
+      <Exclamation position={[6, 8 , -120]} onClick={goToGarbageScene} />
+      <Html position={[6, 20 , -120]} center>
+        <div
+          style={{
+            color: "#ff0000",
+            fontSize: "2rem",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          Descubre
+        </div>
+      </Html>
       <Environment files="./hdr/sky3.hdr" background />
     </Canvas>
   );
