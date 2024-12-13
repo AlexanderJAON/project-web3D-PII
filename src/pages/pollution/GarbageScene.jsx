@@ -10,6 +10,12 @@ import Trash5 from "./models/trashmodels/Trash5";
 import Trash7 from "./models/trashmodels/Trash7";
 import Fish1 from "./models/trashmodels/Fish1"; // Modelo de tiburón
 import * as THREE from "three";
+import Fish2 from "./models/trashmodels/Fish2";
+import Fish3 from "./models/trashmodels/Fish3";
+import Fish4 from "./models/trashmodels/Fish4";
+import Fish5 from "./models/trashmodels/Fish5";
+import Fish6 from "./models/trashmodels/Fish6";
+import Fish7 from "./models/trashmodels/Fish7";
 
 // Componente de basura interactiva
 const InteractiveTrash = ({
@@ -88,7 +94,7 @@ const EarthScene = () => {
   const controlsRef = useRef();
 
   const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
-  const fishComponents = [Fish1, ];
+  const fishComponents = [Fish1,Fish2,Fish3, Fish4, Fish5 , Fish6 , Fish7 ];
   const trashCount = 60;
 
   const messages = [
