@@ -17,7 +17,13 @@ import Fish4 from "./models/trashmodels/Fish4";
 import Fish6 from "./models/trashmodels/Fish6";
 import Fish7 from "./models/trashmodels/Fish7";
 
-const InteractiveTrash = ({ TrashModel, position, rotation, scale, onRightClick }) => {
+const InteractiveTrash = ({
+  TrashModel,
+  position,
+  rotation,
+  scale,
+  onRightClick,
+}) => {
   const ref = useRef();
 
   const handlePointerDown = (event) => {
@@ -56,7 +62,8 @@ const InteractiveTrash = ({ TrashModel, position, rotation, scale, onRightClick 
 const generateTrash = (trashComponents, trashCount) => {
   const trashElements = [];
   for (let i = 0; i < trashCount; i++) {
-    const TrashModel = trashComponents[Math.floor(Math.random() * trashComponents.length)];
+    const TrashModel =
+      trashComponents[Math.floor(Math.random() * trashComponents.length)];
     const position = [
       (Math.random() - 0.5) * 10,
       (Math.random() - 0.5) * 10,
@@ -95,7 +102,7 @@ const EarthScene = () => {
       hdrTexture.onUpdate = () => {
         const colorFilter = new THREE.Color(0.5, 1, 0.5); // Verde
         for (let i = 0; i < hdrTexture.image.data.length; i += 4) {
-          hdrTexture.image.data[i] *= colorFilter.r;     // Rojo
+          hdrTexture.image.data[i] *= colorFilter.r; // Rojo
           hdrTexture.image.data[i + 1] *= colorFilter.g; // Verde
           hdrTexture.image.data[i + 2] *= colorFilter.b; // Azul
         }
@@ -109,9 +116,12 @@ const EarthScene = () => {
   }, []);
 
   const handleRightClick = (TrashModel) => {
-    setTrashElements((prev) => prev.filter((item) => item.TrashModel !== TrashModel));
+    setTrashElements((prev) =>
+      prev.filter((item) => item.TrashModel !== TrashModel)
+    );
 
-    const FishModel = fishComponents[Math.floor(Math.random() * fishComponents.length)];
+    const FishModel =
+      fishComponents[Math.floor(Math.random() * fishComponents.length)];
     const position = [
       (Math.random() - 0.5) * 10,
       (Math.random() - 0.5) * 10,
@@ -121,9 +131,24 @@ const EarthScene = () => {
   };
 
   return (
-    <Canvas shadows style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0 }}>
+    <Canvas
+      shadows
+      style={{
+        width: "100vw",
+        height: "100vh",
+        position: "absolute",
+        top: 0,
+        left: 0,
+      }}
+    >
       <Physics gravity={[0, 0, 0]}>
-        <directionalLight castShadow intensity={2} position={[0, 10, 0]} shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+        <directionalLight
+          castShadow
+          intensity={2}
+          position={[0, 10, 0]}
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+        />
         <ambientLight />
 
         {/* Renderizar basura */}
@@ -145,9 +170,22 @@ const EarthScene = () => {
           </RigidBody>
         ))}
 
+        
+<Fish2 scale={1} position={[2, 1, -3]} />
+<Fish3 scale={1} position={[-1, 2, 4]} />
+<Fish4 scale={1} position={[0, -1, 2]} />
+<Fish6 scale={1} position={[3, -2, -5]} />
+<Fish7 scale={1} position={[-3, 0, -2]} />
+
       </Physics>
 
-      <OrbitControls ref={controlsRef} enablePan enableZoom enableRotate makeDefault />
+      <OrbitControls
+        ref={controlsRef}
+        enablePan
+        enableZoom
+        enableRotate
+        makeDefault
+      />
       {hdrTexture && <Environment background map={hdrTexture} />}
     </Canvas>
   );
