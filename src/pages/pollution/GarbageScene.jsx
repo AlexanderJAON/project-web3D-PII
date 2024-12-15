@@ -13,9 +13,9 @@ import * as THREE from "three";
 import Fish2 from "./models/trashmodels/Fish2";
 import Fish3 from "./models/trashmodels/Fish3";
 import Fish4 from "./models/trashmodels/Fish4";
-import Fish5 from "./models/trashmodels/Fish5";
 import Fish6 from "./models/trashmodels/Fish6";
 import Fish7 from "./models/trashmodels/Fish7";
+
 
 // Componente de basura interactiva
 const InteractiveTrash = ({
@@ -94,7 +94,7 @@ const EarthScene = () => {
   const controlsRef = useRef();
 
   const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
-  const fishComponents = [Fish1,Fish2,Fish3, Fish4, Fish5 , Fish6 , Fish7 ];
+  const fishComponents = [Fish1, Fish2, Fish3, Fish4, Fish6, Fish7];
   const trashCount = 60;
 
   const messages = [
@@ -130,7 +130,8 @@ const EarthScene = () => {
   }, [cameraPosition]);
 
   const updateTopic = (direction) => {
-    const newIndex = (topicIndex + direction + messages.length) % messages.length;
+    const newIndex =
+      (topicIndex + direction + messages.length) % messages.length;
     setTopicIndex(newIndex);
 
     setCameraPosition([
@@ -142,10 +143,13 @@ const EarthScene = () => {
 
   const handleRightClick = (TrashModel) => {
     // Filtra los elementos de basura para eliminar los del tipo clicado
-    setTrashElements((prev) => prev.filter((item) => item.TrashModel !== TrashModel));
+    setTrashElements((prev) =>
+      prev.filter((item) => item.TrashModel !== TrashModel)
+    );
 
     // Selecciona un pez aleatorio
-    const FishModel = fishComponents[Math.floor(Math.random() * fishComponents.length)];
+    const FishModel =
+      fishComponents[Math.floor(Math.random() * fishComponents.length)];
     const position = [
       (Math.random() - 0.5) * 10,
       (Math.random() - 0.5) * 10,
@@ -171,7 +175,9 @@ const EarthScene = () => {
             maxWidth: "300px",
           }}
         >
-          <h1 style={{ fontSize: "3rem", margin: "10px 0"  }}>{messages[topicIndex].title}</h1>
+          <h1 style={{ fontSize: "3rem", margin: "10px 0" }}>
+            {messages[topicIndex].title}
+          </h1>
           <p style={{ fontSize: "1.2rem" }}>{messages[topicIndex].text}</p>
           <button
             style={{
@@ -196,9 +202,24 @@ const EarthScene = () => {
         </div>
       )}
 
-      <Canvas shadows style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0 }}>
+      <Canvas
+        shadows
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      >
         <Physics gravity={[0, 0, 0]}>
-          <directionalLight castShadow intensity={2} position={[0, 10, 0]} shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+          <directionalLight
+            castShadow
+            intensity={2}
+            position={[0, 10, 0]}
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
           <ambientLight />
 
           {/* Renderizar basura */}
@@ -216,13 +237,18 @@ const EarthScene = () => {
           {/* Renderizar peces */}
           {fishElements.map((fish, i) => (
             <RigidBody key={i} position={fish.position} colliders="hull">
-              <fish.FishModel />
+              <fish.FishModel scale={1} />{" "}
             </RigidBody>
           ))}
-
         </Physics>
 
-        <OrbitControls ref={controlsRef} enablePan enableZoom enableRotate makeDefault />
+        <OrbitControls
+          ref={controlsRef}
+          enablePan
+          enableZoom
+          enableRotate
+          makeDefault
+        />
         <Environment files="./hdr/UNDERWATER.hdr" background />
       </Canvas>
     </div>

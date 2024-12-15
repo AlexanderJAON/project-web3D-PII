@@ -14,7 +14,6 @@ import Fish1 from "./models/trashmodels/Fish1";
 import Fish2 from "./models/trashmodels/Fish2";
 import Fish3 from "./models/trashmodels/Fish3";
 import Fish4 from "./models/trashmodels/Fish4";
-import Fish5 from "./models/trashmodels/Fish5";
 import Fish6 from "./models/trashmodels/Fish6";
 import Fish7 from "./models/trashmodels/Fish7";
 
@@ -78,32 +77,31 @@ const generateTrash = (trashComponents, trashCount) => {
 const EarthScene = () => {
   const [trashElements, setTrashElements] = useState([]);
   const [fishElements, setFishElements] = useState([]);
-  const [hdrTexture, setHdrTexture] = useState(null);
   const controlsRef = useRef();
 
   const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
-  const fishComponents = [Fish1, Fish2, Fish3, Fish4, Fish5, Fish6, Fish7];
+  const fishComponents = [Fish1, Fish2, Fish3, Fish4, Fish6, Fish7];
   const trashCount = 60;
 
-  const loadedHdr = useLoader(RGBELoader, "./hdr/UNDERWATER.hdr");
+  const hdrTexture = useLoader(RGBELoader, "./hdr/UNDERWATER.hdr");
 
+  // Aplicar un tono verde al HDR
   useEffect(() => {
-    if (loadedHdr) {
-      loadedHdr.encoding = THREE.sRGBEncoding;
-      loadedHdr.magFilter = THREE.LinearFilter;
-      loadedHdr.minFilter = THREE.LinearFilter;
+    if (hdrTexture) {
+      hdrTexture.encoding = THREE.sRGBEncoding;
+      hdrTexture.magFilter = THREE.LinearFilter;
+      hdrTexture.minFilter = THREE.LinearFilter;
 
-      // Aplicar filtro verde
-      const colorFilter = new THREE.Color(0.5, 1, 0.5);
-      for (let i = 0; i < loadedHdr.image.data.length; i += 4) {
-        loadedHdr.image.data[i] *= colorFilter.r;
-        loadedHdr.image.data[i + 1] *= colorFilter.g;
-        loadedHdr.image.data[i + 2] *= colorFilter.b;
-      }
-
-      setHdrTexture(loadedHdr);
+      hdrTexture.onUpdate = () => {
+        const colorFilter = new THREE.Color(0.5, 1, 0.5); // Verde
+        for (let i = 0; i < hdrTexture.image.data.length; i += 4) {
+          hdrTexture.image.data[i] *= colorFilter.r;     // Rojo
+          hdrTexture.image.data[i + 1] *= colorFilter.g; // Verde
+          hdrTexture.image.data[i + 2] *= colorFilter.b; // Azul
+        }
+      };
     }
-  }, [loadedHdr]);
+  }, [hdrTexture]);
 
   useEffect(() => {
     const generatedTrash = generateTrash(trashComponents, trashCount);
@@ -157,16 +155,8 @@ const EarthScene = () => {
 
 const App = () => {
   return (
-    <Suspense fallback={<div style={{ color: "white", textAlign: "center", padding: "20px" }}>Cargando...</div>}>
+    <Suspense fallback={<Loader />}>
       <EarthScene />
-      <Loader
-        dataInterpolation={(p) => `Cargando... ${p.toFixed(2)}%`}
-        containerStyles={{
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          color: "white",
-          fontSize: "1.2rem",
-        }}
-      />
     </Suspense>
   );
 };
