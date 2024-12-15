@@ -90,6 +90,7 @@ const EarthScene = () => {
   const [cameraPosition, setCameraPosition] = useState([12, 2, 0]);
   const [fishCounter, setFishCounter] = useState(1);
   const controlsRef = useRef();
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
   const fishComponents = [Fish1, Fish2, Fish3, Fish4, Fish6, Fish7];
@@ -109,6 +110,30 @@ const EarthScene = () => {
       text: "El 80% de la contaminación marina proviene de actividades terrestres, como desechos mal gestionados.",
     },
     {
+      title: "Contaminación por Microplásticos",
+      text: "Los microplásticos, presentes en muchos productos, se acumulan en los océanos y afectan a toda la cadena alimentaria.",
+    },
+    {
+      title: "Impacto en la Salud Humana",
+      text: "Los productos químicos tóxicos en el agua pueden entrar en la cadena alimentaria, afectando la salud de los humanos a través del consumo de mariscos.",
+    },
+    {
+      title: "Muerte de Especies Marinas",
+      text: "La ingestión de plásticos y desechos provoca la muerte de miles de especies marinas cada año.",
+    },
+    {
+      title: "Reciclaje y Reducción de Residuos",
+      text: "Reducir, reutilizar y reciclar ayuda a minimizar la cantidad de desechos que terminan en los cuerpos de agua.",
+    },
+    {
+      title: "Restauración de Hábitats Marinos",
+      text: "Proyectos de limpieza y restauración de hábitats marinos son cruciales para recuperar los ecosistemas dañados por la basura.",
+    },
+    {
+      title: "El Papel de las Empresas en la Contaminación",
+      text: "Las industrias deben tomar medidas para reducir los desechos plásticos y mejorar la gestión de sus residuos.",
+    },
+    {
       title: "Interacción con la Basura",
       text: "Puedes interactuar con la basura. Haz clic izquierdo para empujarla y clic derecho para limpiarla y descubrir algo nuevo.",
     },
@@ -120,44 +145,43 @@ const EarthScene = () => {
   }, []);
 
   const updateTopic = (direction) => {
+    if (isAnimating) return;
+
+    setIsAnimating(true);
+
     const newIndex =
       (topicIndex + direction + messages.length) % messages.length;
     setTopicIndex(newIndex);
 
-    // Calcula la nueva posición de la cámara basada en el nuevo índice
     const newCameraPosition = [
       Math.cos((newIndex * (2 * Math.PI)) / messages.length) * 12,
       2,
       Math.sin((newIndex * (2 * Math.PI)) / messages.length) * 12,
     ];
 
-    // Llamamos a una función para mover la cámara de forma gradual
     moveCamera(newCameraPosition);
   };
 
-  // Función para mover la cámara de forma gradual
   const moveCamera = (targetPosition) => {
     let startTime = null;
-    const duration = 3; // Duración en segundos para el movimiento
+    const duration = 1;
 
     const animateCamera = (time) => {
       if (!startTime) startTime = time;
-      const progress = (time - startTime) / (duration * 1000); // Calcular progreso (0 a 1)
+      const progress = (time - startTime) / (duration * 1000);
       if (progress < 1) {
         const currentPosition = controlsRef.current.object.position;
-        currentPosition.lerp(
-          new THREE.Vector3(...targetPosition),
-          0.05 // Velocidad de interpolación
-        );
+        currentPosition.lerp(new THREE.Vector3(...targetPosition), 0.05);
         controlsRef.current.update();
-        requestAnimationFrame(animateCamera); // Seguir animando
+        requestAnimationFrame(animateCamera);
       } else {
         controlsRef.current.object.position.set(...targetPosition);
         controlsRef.current.update();
+        setIsAnimating(false);
       }
     };
 
-    requestAnimationFrame(animateCamera); // Inicia la animación
+    requestAnimationFrame(animateCamera);
   };
 
   const handleRightClick = (TrashModel) => {
@@ -184,20 +208,21 @@ const EarthScene = () => {
             left: "3%",
             zIndex: 10,
             background: "rgba(0, 0, 0, 0.7)",
-            padding: "20px",
+            padding: "30px",
             borderRadius: "10px",
             color: "white",
-            maxWidth: "300px",
+            maxWidth: "400px",
           }}
         >
-          <h1 style={{ fontSize: "3rem", margin: "10px 0" }}>
+          <h1 style={{ fontSize: "4rem", margin: "15px 0" }}>
             {messages[topicIndex].title}
           </h1>
-          <p style={{ fontSize: "1.2rem" }}>{messages[topicIndex].text}</p>
+          <p style={{ fontSize: "1.5rem" }}>{messages[topicIndex].text}</p>
           <button
             style={{
-              marginTop: "10px",
-              padding: "10px 20px",
+              marginTop: "15px",
+              padding: "15px 30px",
+              fontSize: "1.5rem",
               background: "#09bc86",
               border: "none",
               borderRadius: "5px",
