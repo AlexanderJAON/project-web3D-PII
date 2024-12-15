@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, FirstPersonControls,Text3D } from "@react-three/drei";
+import { Environment, FirstPersonControls, Text3D } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
 import { VideoTexture } from "three";
 import Island from "./models/Island";
@@ -10,7 +10,6 @@ import Pipe from "./models/Pipe";
 import Liquid from "./models/Liquid";
 import Tree from "./models/Tree";
 
-// Componente que proyecta el video como textura
 const YouTubeScreen = ({ videoUrl, onTogglePlayPause }) => {
   const videoRef = useRef();
   const videoTextureRef = useRef();
@@ -18,36 +17,34 @@ const YouTubeScreen = ({ videoUrl, onTogglePlayPause }) => {
   const togglePlayPause = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        videoRef.current.play(); // Reanudar si está pausado
-        videoRef.current.muted = false; // Rehabilitar el sonido al reproducir
+        videoRef.current.play();
+        videoRef.current.muted = false;
       } else {
-        videoRef.current.pause(); // Pausar si está reproduciendo
+        videoRef.current.pause();
       }
-      onTogglePlayPause(); // Llama la función para actualizar el estado de los controles
+      onTogglePlayPause();
     }
   };
 
   useEffect(() => {
-    // Crear elemento <video>
     const video = document.createElement("video");
     video.src = videoUrl;
-    video.crossOrigin = "anonymous"; // Asegura que no haya problemas con CORS
+    video.crossOrigin = "anonymous";
     video.loop = true;
-    video.muted = true; // Inicialmente silenciado para cumplir políticas de autoplay
+    video.muted = true;
     video.play();
 
-    videoRef.current = video; // Guardar referencia al video
+    videoRef.current = video;
 
-    // Crear textura de video
     const texture = new VideoTexture(video);
     videoTextureRef.current = texture;
   }, [videoUrl]);
 
   return (
     <mesh
-      position={[-19, 40, 12.7]} // Posición del marco en la escena
-      rotation={[0, Math.PI / 2.5, 0]} // Rotación para que quede hacia el espectador
-      onClick={togglePlayPause} // Alternar reproducción al hacer clic
+      position={[-19, 40, 12.7]}
+      rotation={[0, Math.PI / 2.5, 0]}
+      onClick={togglePlayPause}
     >
       <planeGeometry args={[16, 9]} />
       {videoTextureRef.current && (
@@ -59,10 +56,10 @@ const YouTubeScreen = ({ videoUrl, onTogglePlayPause }) => {
 
 const EarthScene = ({ onExclamationClick }) => {
   const navigate = useNavigate();
-  const [controlsEnabled, setControlsEnabled] = useState(true); // Estado para habilitar/deshabilitar los controles de la cámara
+  const [controlsEnabled, setControlsEnabled] = useState(true);
 
   const handleExclamationClick = () => {
-    onExclamationClick(); // Llama la función recibida como prop
+    onExclamationClick();
   };
 
   const goToGarbageScene = () => {
@@ -73,16 +70,25 @@ const EarthScene = ({ onExclamationClick }) => {
     navigate("/SpillScene");
   };
 
-  const toggleControls = () => {
-    setControlsEnabled((prev) => !prev); // Alternar estado de los controles de la cámara
+  const goToDeforestationScene = () => {
+    navigate("/DeforestationScene");
   };
 
-  // Ruta del video (debe ser local o de un servidor accesible)
+  const toggleControls = () => {
+    setControlsEnabled((prev) => !prev);
+  };
+
   const videoUrl = "/videos/v1.mp4";
 
   return (
-    <Canvas shadows camera={{ position: [-5, 40, 16],rotation: [0, Math.PI / 2.5, 0], fov: 90 }}>
-      {/* Iluminación */}
+    <Canvas
+      shadows
+      camera={{
+        position: [-5, 40, 16],
+        rotation: [0, Math.PI / 2.5, 0],
+        fov: 90,
+      }}
+    >
       <directionalLight
         castShadow
         intensity={0.5}
@@ -92,7 +98,6 @@ const EarthScene = ({ onExclamationClick }) => {
       />
       <ambientLight intensity={0.3} />
 
-      {/* Modelos */}
       <Island />
       <PileTrash position={[-160, 1.4, 0]} rotation={[0, Math.PI / 18, 0]} />
       <PileTrash position={[-177, 1.4, 20]} rotation={[0, Math.PI / -42, 0]} />
@@ -110,20 +115,16 @@ const EarthScene = ({ onExclamationClick }) => {
       <Tree position={[20, -1, -120]} />
       <Tree position={[3, 2, -100]} />
       <Tree position={[3, 1, -128]} />
-      <Exclamation position={[6, 8, -120]} onClick={goToGarbageScene} />
+      <Exclamation position={[6, 8, -120]} onClick={goToDeforestationScene} />
 
-      {/* Proyección del video como textura */}
       <YouTubeScreen videoUrl={videoUrl} onTogglePlayPause={toggleControls} />
 
-      {/* Controles de la cámara estilo FPS */}
       <FirstPersonControls
         movementSpeed={12}
         lookSpeed={0.1}
         lookVertical={true}
         position={[0, 200, 100]}
-
       />
-
       <Text3D
         font="/fonts/Impact_Club_Regular.json"
         size={0.5}
@@ -154,7 +155,7 @@ const Pollution = () => {
   };
 
   return (
-    <div style={{ height: "100vh", position: "relative" }}>
+    <div style={{ position: "relative", height: "100vh" }}>
       {isBoxVisible && (
         <div
           style={{
@@ -165,17 +166,17 @@ const Pollution = () => {
             color: "white",
             textAlign: "left",
             zIndex: 1,
-            padding: "20px",
+            padding: "30px",
             maxWidth: "400px",
             background: "rgba(0, 0, 0, 0.5)",
             backdropFilter: "blur(10px)",
             borderRadius: "10px",
           }}
         >
-          <h1 style={{ fontSize: "3rem", margin: "10px 0" }}>
+          <h1 style={{ fontSize: "4rem", margin: "15px 0" }}>
             Contaminación del Agua
           </h1>
-          <p style={{ fontSize: "1.2rem" }}>
+          <p style={{ fontSize: "1.5rem" }}>
             La contaminación del agua es uno de los mayores desafíos
             medioambientales. Desde residuos plásticos hasta productos químicos
             tóxicos, nuestros ríos, lagos y océanos se enfrentan a una crisis
@@ -186,16 +187,14 @@ const Pollution = () => {
           <button
             className="btn-primary fade-in"
             style={{
-              marginTop: "20px",
-              padding: "12px 24px",
-              fontSize: "1.2rem",
-              borderRadius: "30px",
+              marginTop: "15px",
+              padding: "15px 30px",
+              fontSize: "1.5rem",
               background: "#09bc86",
               color: "white",
               border: "none",
+              borderRadius: "5px",
               cursor: "pointer",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-              transition: "background 0.3s ease, transform 0.2s ease",
             }}
             onClick={handleButtonClick}
             onMouseEnter={(e) => {
