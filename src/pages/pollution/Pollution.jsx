@@ -146,6 +146,17 @@ const Pollution = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isBoxVisible, setIsBoxVisible] = useState(true);
 
+  useEffect(() => {
+    const audio = new Audio("./sounds/ci1.mp3");
+    audio.loop = true;
+    audio.play();
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0; // Resets the audio if needed
+    };
+  }, []);
+
   const handleButtonClick = () => {
     setIsBoxVisible(false);
   };
