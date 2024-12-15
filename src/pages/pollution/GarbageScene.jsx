@@ -198,6 +198,17 @@ const EarthScene = () => {
     setFishElements((prev) => [...prev, { FishModel, position }]);
   };
 
+  useEffect(() => {
+      const audio = new Audio("./sounds/ca1.mp3");
+      audio.loop = true;
+      audio.play();
+  
+      return () => {
+        audio.pause();
+        audio.currentTime = 0; // Resets the audio if needed
+      };
+    }, []);
+
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       {topicIndex < messages.length && (

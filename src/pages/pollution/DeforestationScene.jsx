@@ -103,6 +103,17 @@ const EarthScene = () => {
     requestAnimationFrame(animateCamera);
   };
 
+  useEffect(() => {
+        const audio = new Audio("./sounds/cs1.mp3");
+        audio.loop = true;
+        audio.play();
+    
+        return () => {
+          audio.pause();
+          audio.currentTime = 0; // Resets the audio if needed
+        };
+      }, []);
+
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       {topicIndex < messages.length && (
