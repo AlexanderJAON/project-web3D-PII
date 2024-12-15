@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
-import { Environment, OrbitControls, Html } from "@react-three/drei";
+import React, { useEffect, useState, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Environment, FirstPersonControls,Text3D } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
+import { VideoTexture } from "three";
 import Island from "./models/Island";
 import PileTrash from "./models/PileTrash";
 import Exclamation from "./models/Exclamation_point";
@@ -9,42 +10,56 @@ import Pipe from "./models/Pipe";
 import Liquid from "./models/Liquid";
 import Tree from "./models/Tree";
 
+// Componente que proyecta el video como textura
+const YouTubeScreen = ({ videoUrl, onTogglePlayPause }) => {
+  const videoRef = useRef();
+  const videoTextureRef = useRef();
 
-function CameraControls() {
-  const { camera } = useThree();
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play(); // Reanudar si está pausado
+        videoRef.current.muted = false; // Rehabilitar el sonido al reproducir
+      } else {
+        videoRef.current.pause(); // Pausar si está reproduciendo
+      }
+      onTogglePlayPause(); // Llama la función para actualizar el estado de los controles
+    }
+  };
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      const step = 5; // Tamaño del paso de movimiento de la cámara
+    // Crear elemento <video>
+    const video = document.createElement("video");
+    video.src = videoUrl;
+    video.crossOrigin = "anonymous"; // Asegura que no haya problemas con CORS
+    video.loop = true;
+    video.muted = true; // Inicialmente silenciado para cumplir políticas de autoplay
+    video.play();
 
-      switch (event.key) {
-        case "ArrowUp": // Mover hacia adelante
-          camera.position.z -= step;
-          break;
-        case "ArrowDown": // Mover hacia atrás
-          camera.position.z += step;
-          break;
-        case "ArrowLeft": // Mover hacia la izquierda
-          camera.position.x -= step;
-          break;
-        case "ArrowRight": // Mover hacia la derecha
-          camera.position.x += step;
-          break;
-        default:
-          break;
-      }
-    };
+    videoRef.current = video; // Guardar referencia al video
 
-    window.addEventListener("keydown", handleKeyDown);
+    // Crear textura de video
+    const texture = new VideoTexture(video);
+    videoTextureRef.current = texture;
+  }, [videoUrl]);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [camera]);
-
-  return null;
-}
+  return (
+    <mesh
+      position={[-19, 40, 12.7]} // Posición del marco en la escena
+      rotation={[0, Math.PI / 2.5, 0]} // Rotación para que quede hacia el espectador
+      onClick={togglePlayPause} // Alternar reproducción al hacer clic
+    >
+      <planeGeometry args={[16, 9]} />
+      {videoTextureRef.current && (
+        <meshBasicMaterial map={videoTextureRef.current} />
+      )}
+    </mesh>
+  );
+};
 
 const EarthScene = ({ onExclamationClick }) => {
   const navigate = useNavigate();
+  const [controlsEnabled, setControlsEnabled] = useState(true); // Estado para habilitar/deshabilitar los controles de la cámara
 
   const handleExclamationClick = () => {
     onExclamationClick(); // Llama la función recibida como prop
@@ -54,71 +69,73 @@ const EarthScene = ({ onExclamationClick }) => {
     navigate("/GarbageScene");
   };
 
+  const goToSpillScene = () => {
+    navigate("/SpillScene");
+  };
+
+  const toggleControls = () => {
+    setControlsEnabled((prev) => !prev); // Alternar estado de los controles de la cámara
+  };
+
+  // Ruta del video (debe ser local o de un servidor accesible)
+  const videoUrl = "/videos/v1.mp4";
+
   return (
-    <Canvas shadows camera={{ position: [0, 120, 150], fov: 60 }}>
+    <Canvas shadows camera={{ position: [-5, 40, 16],rotation: [0, Math.PI / 2.5, 0], fov: 90 }}>
+      {/* Iluminación */}
       <directionalLight
         castShadow
-        intensity={0.2}
-        position={[0, 20, 400]}
+        intensity={0.5}
+        position={[0, 100, 100]}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
+      <ambientLight intensity={0.3} />
+
+      {/* Modelos */}
       <Island />
-      <OrbitControls />
-      <CameraControls />
       <PileTrash position={[-160, 1.4, 0]} rotation={[0, Math.PI / 18, 0]} />
       <PileTrash position={[-177, 1.4, 20]} rotation={[0, Math.PI / -42, 0]} />
       <Exclamation position={[-177, 10, 20]} onClick={handleExclamationClick} />
-      <Html position={[-177, 22, 20]} center>
-        <div
-          style={{
-            color: "#ff0000",
-            fontSize: "2rem",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          Descubre
-        </div>
-      </Html>
       <Exclamation position={[-177, 10, 20]} onClick={goToGarbageScene} />
       <PileTrash position={[-160, 1.4, 40]} rotation={[0, Math.PI / 3.7, 0]} />
       <PileTrash position={[-125, 1.4, -20]} rotation={[0, Math.PI / 1, 0]} />
-      <Pipe position={[140, 4 , 106]} rotation={[0, Math.PI / 0.6, 0]}/>
-      <Liquid position={[146.1, -15 , 120]} rotation={[0, Math.PI / 7, 0]} />
-      <Liquid position={[147, 8 , 138]} rotation={[Math.PI, Math.PI / 7, 0]} />
-      <Exclamation position={[145, 20 , 115]} onClick={goToGarbageScene} />
-      <Html position={[145, 30 , 115]} center>
-        <div
-          style={{
-            color: "#ff0000",
-            fontSize: "2rem",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          Descubre
-        </div>
-      </Html>
-      <Tree position={[10, 0 , -100]}/>
-      <Tree position={[25, 1 , -110]}/>
-      <Tree position={[16, 2 , -112]}/>
-      <Tree position={[20, -1 , -120]}/>
-      <Tree position={[3, 2 , -100]}/>
-      <Tree position={[3, 1 , -128]}/>
-      <Exclamation position={[6, 8 , -120]} onClick={goToGarbageScene} />
-      <Html position={[6, 20 , -120]} center>
-        <div
-          style={{
-            color: "#ff0000",
-            fontSize: "2rem",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          Descubre
-        </div>
-      </Html>
+      <Pipe position={[140, 4, 106]} rotation={[0, Math.PI / 0.6, 0]} />
+      <Liquid position={[146.1, -15, 120]} rotation={[0, Math.PI / 7, 0]} />
+      <Liquid position={[147, 8, 138]} rotation={[Math.PI, Math.PI / 7, 0]} />
+      <Exclamation position={[145, 20, 115]} onClick={goToSpillScene} />
+      <Tree position={[10, 0, -100]} />
+      <Tree position={[25, 1, -110]} />
+      <Tree position={[16, 2, -112]} />
+      <Tree position={[20, -1, -120]} />
+      <Tree position={[3, 2, -100]} />
+      <Tree position={[3, 1, -128]} />
+      <Exclamation position={[6, 8, -120]} onClick={goToGarbageScene} />
+
+      {/* Proyección del video como textura */}
+      <YouTubeScreen videoUrl={videoUrl} onTogglePlayPause={toggleControls} />
+
+      {/* Controles de la cámara estilo FPS */}
+      <FirstPersonControls
+        movementSpeed={12}
+        lookSpeed={0.1}
+        lookVertical={true}
+        position={[0, 200, 100]}
+
+      />
+
+      <Text3D
+        font="/fonts/Impact_Club_Regular.json"
+        size={0.5}
+        height={0.2}
+        position={[-19, 35, 17]}
+        rotation={[0, Math.PI / 2.5, 0]}
+      >
+        Clic para reproducir.
+        <meshStandardMaterial color="black" />
+      </Text3D>
+
+      {/* Ambiente HDR */}
       <Environment files="./hdr/sky3.hdr" background />
     </Canvas>
   );
@@ -126,10 +143,10 @@ const EarthScene = ({ onExclamationClick }) => {
 
 const Pollution = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [isBoxVisible, setIsBoxVisible] = useState(true); // Estado para controlar visibilidad
+  const [isBoxVisible, setIsBoxVisible] = useState(true);
 
   const handleButtonClick = () => {
-    setIsBoxVisible(false); // Oculta el cuadro de texto
+    setIsBoxVisible(false);
   };
 
   const handleExclamationClick = () => {
@@ -138,7 +155,6 @@ const Pollution = () => {
 
   return (
     <div style={{ height: "100vh", position: "relative" }}>
-      {/* Cuadro de texto */}
       {isBoxVisible && (
         <div
           style={{
@@ -193,8 +209,6 @@ const Pollution = () => {
           </button>
         </div>
       )}
-
-      
       <EarthScene onExclamationClick={handleExclamationClick} />
     </div>
   );

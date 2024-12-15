@@ -13,11 +13,9 @@ import * as THREE from "three";
 import Fish2 from "./models/trashmodels/Fish2";
 import Fish3 from "./models/trashmodels/Fish3";
 import Fish4 from "./models/trashmodels/Fish4";
-import Fish5 from "./models/trashmodels/Fish5";
 import Fish6 from "./models/trashmodels/Fish6";
 import Fish7 from "./models/trashmodels/Fish7";
 
-// Componente de basura interactiva
 const InteractiveTrash = ({
   TrashModel,
   position,
@@ -94,7 +92,7 @@ const EarthScene = () => {
   const controlsRef = useRef();
 
   const trashComponents = [Trash1, Trash2, Trash3, Trash4, Trash5, Trash7];
-  const fishComponents = [Fish1,Fish2,Fish3, Fish4, Fish5 , Fish6 , Fish7 ];
+  const fishComponents = [Fish1, Fish2, Fish3, Fish4, Fish6, Fish7];
   const trashCount = 60;
 
   const messages = [
@@ -121,40 +119,61 @@ const EarthScene = () => {
     setTrashElements(generatedTrash);
   }, []);
 
-  useEffect(() => {
-    if (controlsRef.current) {
-      controlsRef.current.target.set(0, 0, 0);
-      controlsRef.current.object.position.set(...cameraPosition);
-      controlsRef.current.update();
-    }
-  }, [cameraPosition]);
-
   const updateTopic = (direction) => {
-    const newIndex = (topicIndex + direction + messages.length) % messages.length;
+    const newIndex =
+      (topicIndex + direction + messages.length) % messages.length;
     setTopicIndex(newIndex);
 
-    setCameraPosition([
+    // Calcula la nueva posición de la cámara basada en el nuevo índice
+    const newCameraPosition = [
       Math.cos((newIndex * (2 * Math.PI)) / messages.length) * 12,
       2,
       Math.sin((newIndex * (2 * Math.PI)) / messages.length) * 12,
-    ]);
+    ];
+
+    // Llamamos a una función para mover la cámara de forma gradual
+    moveCamera(newCameraPosition);
+  };
+
+  // Función para mover la cámara de forma gradual
+  const moveCamera = (targetPosition) => {
+    let startTime = null;
+    const duration = 3; // Duración en segundos para el movimiento
+
+    const animateCamera = (time) => {
+      if (!startTime) startTime = time;
+      const progress = (time - startTime) / (duration * 1000); // Calcular progreso (0 a 1)
+      if (progress < 1) {
+        const currentPosition = controlsRef.current.object.position;
+        currentPosition.lerp(
+          new THREE.Vector3(...targetPosition),
+          0.05 // Velocidad de interpolación
+        );
+        controlsRef.current.update();
+        requestAnimationFrame(animateCamera); // Seguir animando
+      } else {
+        controlsRef.current.object.position.set(...targetPosition);
+        controlsRef.current.update();
+      }
+    };
+
+    requestAnimationFrame(animateCamera); // Inicia la animación
   };
 
   const handleRightClick = (TrashModel) => {
-    // Filtra los elementos de basura para eliminar los del tipo clicado
-    setTrashElements((prev) => prev.filter((item) => item.TrashModel !== TrashModel));
-
-    // Selecciona un pez aleatorio
-    const FishModel = fishComponents[Math.floor(Math.random() * fishComponents.length)];
+    setTrashElements((prev) =>
+      prev.filter((item) => item.TrashModel !== TrashModel)
+    );
+    const FishModel =
+      fishComponents[Math.floor(Math.random() * fishComponents.length)];
     const position = [
       (Math.random() - 0.5) * 10,
       (Math.random() - 0.5) * 10,
       (Math.random() - 0.5) * 10,
     ];
-
-    // Agrega el nuevo pez al estado
     setFishElements((prev) => [...prev, { FishModel, position }]);
   };
+
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       {topicIndex < messages.length && (
@@ -171,7 +190,9 @@ const EarthScene = () => {
             maxWidth: "300px",
           }}
         >
-          <h1 style={{ fontSize: "3rem", margin: "10px 0"  }}>{messages[topicIndex].title}</h1>
+          <h1 style={{ fontSize: "3rem", margin: "10px 0" }}>
+            {messages[topicIndex].title}
+          </h1>
           <p style={{ fontSize: "1.2rem" }}>{messages[topicIndex].text}</p>
           <button
             style={{
@@ -185,7 +206,7 @@ const EarthScene = () => {
             }}
             onClick={() => {
               if (topicIndex === messages.length - 1) {
-                setTopicIndex(messages.length); // Cierra el cuadro
+                setTopicIndex(messages.length);
               } else {
                 updateTopic(1);
               }
@@ -196,12 +217,25 @@ const EarthScene = () => {
         </div>
       )}
 
-      <Canvas shadows style={{ width: "100vw", height: "100vh", position: "absolute", top: 0, left: 0 }}>
+      <Canvas
+        shadows
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      >
         <Physics gravity={[0, 0, 0]}>
-          <directionalLight castShadow intensity={2} position={[0, 10, 0]} shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+          <directionalLight
+            castShadow
+            intensity={2}
+            position={[0, 10, 0]}
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
           <ambientLight />
-
-          {/* Renderizar basura */}
           {trashElements.map((element, i) => (
             <InteractiveTrash
               key={i}
@@ -212,17 +246,19 @@ const EarthScene = () => {
               onRightClick={() => handleRightClick(element.TrashModel)}
             />
           ))}
-
-          {/* Renderizar peces */}
           {fishElements.map((fish, i) => (
             <RigidBody key={i} position={fish.position} colliders="hull">
-              <fish.FishModel />
+              <fish.FishModel scale={1} />
             </RigidBody>
           ))}
-
         </Physics>
-
-        <OrbitControls ref={controlsRef} enablePan enableZoom enableRotate makeDefault />
+        <OrbitControls
+          ref={controlsRef}
+          enablePan
+          enableZoom
+          enableRotate
+          makeDefault
+        />
         <Environment files="./hdr/UNDERWATER.hdr" background />
       </Canvas>
     </div>

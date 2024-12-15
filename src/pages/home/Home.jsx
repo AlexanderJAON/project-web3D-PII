@@ -13,7 +13,9 @@ import {
   OrbitControls,
   PointerLockControls,
   Text,
-  Text3D, Html } from "@react-three/drei";
+  Text3D,
+  Html,
+} from "@react-three/drei";
 import { getDocs, query, where } from "firebase/firestore";
 import UserDAO from "../../daos/UserDAO";
 import { FirstPersonControls, PositionalAudio } from "@react-three/drei";
@@ -65,7 +67,7 @@ const Home = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [startMoving, setStartMoving] = useState(false);
-  const [hoveredModel, setHoveredModel] = useState(null); 
+  const [hoveredModel, setHoveredModel] = useState(null);
   const [showIntroduction, setShowIntroduction] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   useEffect(() => {
@@ -75,7 +77,6 @@ const Home = () => {
   const closePopup = () => {
     setIsPopupVisible(false);
   };
-
 
   const handleLogout = useCallback(() => {
     logout();
@@ -168,16 +169,20 @@ const Home = () => {
   return (
     <>
       <div className="container-home">
-      {isPopupVisible && (
-        <div className="popup">
-          <div className="popup-content">
-            <h2>Introducción</h2>
-            <p>Los problemas medioambientales como la acidificación de los océanos, la escasez de agua y la pérdida de biodiversidad afectan gravemente nuestro planeta.
-            Este proyecto busca crear conciencia y promover acciones para mitigar estos problemas.</p>
-            <button onClick={closePopup}>Cerrar</button>
+        {isPopupVisible && (
+          <div className="popup">
+            <div className="popup-content">
+              <h2>Introducción</h2>
+              <p>
+                Los problemas medioambientales como la acidificación de los
+                océanos, la escasez de agua y la pérdida de biodiversidad
+                afectan gravemente nuestro planeta. Este proyecto busca crear
+                conciencia y promover acciones para mitigar estos problemas.
+              </p>
+              <button onClick={closePopup}>Cerrar</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
         <Canvas
           style={{ background: "linear-gradient(#aad1e7, #063149)" }}
           camera={{ position: [0, 60, 140], fov: 65 }}
@@ -186,7 +191,11 @@ const Home = () => {
           <directionalLight intensity={0.5} position={[-8, -2, -8]} />
           <ambientLight intensity={1} />
           <directionalLight position={[0, 10, 10]} intensity={5} />
-          <OrbitControls enableRotate={false} enableZoom={false} enablePan={false}/>
+          <OrbitControls
+            enableRotate={false}
+            enableZoom={false}
+            enablePan={false}
+          />
 
           <SmoothCameraMovement
             startMoving={startMoving}
@@ -217,50 +226,106 @@ const Home = () => {
           </Suspense>
 
           <FloatingAnimation frequency={1.5} amplitude={0.3}>
-            <FishSkeleton position={[-50, -30, 40]} onClick={goToShortage} onPointerOver={() => setHoveredModel("shortage")}
-            onPointerOut={() => setHoveredModel(null)}/>
+            <FishSkeleton
+              position={[-50, -30, 40]}
+              onClick={goToShortage}
+              onPointerOver={() => setHoveredModel("shortage")}
+              onPointerOut={() => setHoveredModel(null)}
+            />
           </FloatingAnimation>
           {hoveredModel === "shortage" && (
-            <Html position={[-50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club'}}>
+            <Html
+              position={[-50, 0, 40]}
+              distanceFactor={200}
+              style={{
+                pointerEvents: "none",
+                color: "#BFC247",
+                background: "rgba(0,0,0,0.6)",
+                padding: "5px",
+                borderRadius: "5px",
+                fontFamily: "Impact Club",
+              }}
+            >
               {descriptions.shortage}
             </Html>
           )}
 
           <FloatingAnimation frequency={1.2} amplitude={0.5}>
-            <Coral position={[0, -30, 40]} onClick={goToAcidification} onPointerOver={() => setHoveredModel("acidification")}
-            onPointerOut={() => setHoveredModel(null)}/>
+            <Coral
+              position={[0, -30, 40]}
+              onClick={goToAcidification}
+              onPointerOver={() => setHoveredModel("acidification")}
+              onPointerOut={() => setHoveredModel(null)}
+            />
           </FloatingAnimation>
           {hoveredModel === "acidification" && (
-            <Html position={[0, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+            <Html
+              position={[0, 0, 40]}
+              distanceFactor={200}
+              style={{
+                pointerEvents: "none",
+                color: "#BFC247",
+                background: "rgba(0,0,0,0.6)",
+                padding: "5px",
+                borderRadius: "5px",
+                fontFamily: "Impact Club",
+              }}
+            >
               {descriptions.acidification}
             </Html>
           )}
 
           <FloatingAnimation frequency={1.8} amplitude={0.4}>
-            <Trash position={[50, -33, 40]} onClick={goToPollution} onPointerOver={() => setHoveredModel("pollution")}
-            onPointerOut={() => setHoveredModel(null)}/>
+            <Trash
+              position={[50, -33, 40]}
+              onClick={goToPollution}
+              onPointerOver={() => setHoveredModel("pollution")}
+              onPointerOut={() => setHoveredModel(null)}
+            />
           </FloatingAnimation>
           {hoveredModel === "pollution" && (
-            <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+            <Html
+              position={[50, 0, 40]}
+              distanceFactor={200}
+              style={{
+                pointerEvents: "none",
+                color: "#BFC247",
+                background: "rgba(0,0,0,0.6)",
+                padding: "5px",
+                borderRadius: "5px",
+                fontFamily: "Impact Club",
+              }}
+            >
               {descriptions.pollution}
             </Html>
           )}
 
-           <FloatingAnimation frequency={1.8} amplitude={0.4}>
-            <Trash position={[50, -33, 40]} onClick={goToQuiz} onPointerOver={() => setHoveredModel("quiz")}
-            onPointerOut={() => setHoveredModel(null)}/>
+          <FloatingAnimation frequency={1.8} amplitude={0.4}>
+            <Trash
+              position={[50, -33, 40]}
+              onClick={goToQuiz}
+              onPointerOver={() => setHoveredModel("quiz")}
+              onPointerOut={() => setHoveredModel(null)}
+            />
           </FloatingAnimation>
           {hoveredModel === "quiz" && (
-            <Html position={[50, 0, 40]} distanceFactor={200} style={{ pointerEvents: 'none', color: '#BFC247', background: 'rgba(0,0,0,0.6)', padding: '5px', borderRadius: '5px', fontFamily: 'Impact Club' }}>
+            <Html
+              position={[50, 0, 40]}
+              distanceFactor={200}
+              style={{
+                pointerEvents: "none",
+                color: "#BFC247",
+                background: "rgba(0,0,0,0.6)",
+                padding: "5px",
+                borderRadius: "5px",
+                fontFamily: "Impact Club",
+              }}
+            >
               {descriptions.pollution}
             </Html>
           )}
-
         </Canvas>
       </div>
-
-     
-      
     </>
   );
 };

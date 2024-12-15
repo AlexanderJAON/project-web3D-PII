@@ -11,6 +11,7 @@ import Awareness from "../pages/shortage/Awareness";
 import GarbageScene from "../pages/pollution/GarbageScene";
 import Menu from "../components/Menu"; // Importa el componente Menu
 import Quiz from "../pages/quiz/Quiz";
+import SpillScene from "../pages/pollution/SpillScene";
 
 
 const Router = createBrowserRouter([
@@ -90,6 +91,15 @@ const Router = createBrowserRouter([
             <>
                 <Menu />
                 <ProtectedRoute><Quiz/></ProtectedRoute>
+            </>
+        )
+    },
+    {
+        path: "/SpillScene",
+        element: (
+            <>
+                <Menu />
+                <ProtectedRoute><SpillScene/></ProtectedRoute>
             </>
         )
     },
