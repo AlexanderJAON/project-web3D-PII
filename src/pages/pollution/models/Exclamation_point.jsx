@@ -1,36 +1,37 @@
-import React, { useEffect, useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import React, { useEffect, useRef } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 
 const Exclamation = (props) => {
-  const group = useRef()
-  const { nodes, materials, animations } = useGLTF('models-3d/exclamation_point.glb');
-  const { actions } = useAnimations(animations, group)
+  const group = useRef();
+  const { nodes, materials } = useGLTF("models-3d/exclamation_point.glb");
 
-  useEffect(() => {
-    if (actions) {
-      console.log(Object.keys(actions));
-      const action = actions[Object.keys(actions)[0]];
-      if (action) {
-        action.play();
-      }
+  // Ref para almacenar la posición inicial
+  const initialPosition = useRef(props.position ? props.position[1] : 0);
+
+  useFrame(({ clock }) => {
+    if (group.current) { // Verifica que group.current no sea undefined
+      const elapsedTime = clock.getElapsedTime();
+      // Actualiza la posición en el eje Y con un movimiento sinusoidal
+      group.current.position.y =
+        initialPosition.current + Math.sin(elapsedTime * 5) * 4; // Ajusta la frecuencia y amplitud aquí
     }
-  }, [actions]);
-  
-  return (
-    <group {...props} dispose={null}>
-    <group name="Scene">
-      <mesh
-        name="Sphere001"
-        geometry={nodes.Sphere001.geometry}
-        material={materials['Material.001']}
-        position={[0, 5.917, 0]}
-        scale={[1.204, 4.017, 1.204]}
-      />
-    </group>
-  </group>
-  )
- 
-}
+  });
 
-useGLTF.preload('models-3d/exclamation_point.glb')
+  return (
+    <group ref={group} {...props} dispose={null}>
+      <group name="Scene">
+        <mesh
+          name="Sphere001"
+          geometry={nodes.Sphere001.geometry}
+          material={materials["Material.001"]}
+          position={[0, 5.917, 0]}
+          scale={[1.204, 4.017, 1.204]}
+        />
+      </group>
+    </group>
+  );
+};
+
+useGLTF.preload("models-3d/exclamation_point.glb");
 export default Exclamation;
