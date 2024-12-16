@@ -1,9 +1,5 @@
 import React from "react";
-import { EffectComposer, Bloom, DepthOfField, Noise, Vignette } from "@react-three/postprocessing";
-import { BlendFunction } from "postprocessing";
-import { Color } from "three";
-import { RenderPass } from "postprocessing";
-
+import { EffectComposer, Bloom, } from "@react-three/postprocessing";
 
 const Postprocessing = () => {
   return (
