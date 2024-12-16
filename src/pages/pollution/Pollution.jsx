@@ -9,6 +9,7 @@ import Exclamation from "./models/Exclamation_point";
 import Pipe from "./models/Pipe";
 import Liquid from "./models/Liquid";
 import Tree from "./models/Tree";
+import Postprocessing from "../acidification/postprocessing/Postprocessing";
 
 const YouTubeScreen = ({ videoUrl, onTogglePlayPause }) => {
   const videoRef = useRef();
@@ -138,6 +139,7 @@ const EarthScene = ({ onExclamationClick }) => {
 
       {/* Ambiente HDR */}
       <Environment files="./hdr/sky3.hdr" background />
+      <Postprocessing/>
     </Canvas>
   );
 };
@@ -150,6 +152,7 @@ const Pollution = () => {
     const audio = new Audio("./sounds/ci1.mp3");
     audio.loop = true;
     audio.play();
+    audio.volume=0.2;
 
     return () => {
       audio.pause();
