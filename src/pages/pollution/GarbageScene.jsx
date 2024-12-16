@@ -15,6 +15,7 @@ import Fish3 from "./models/trashmodels/Fish3";
 import Fish4 from "./models/trashmodels/Fish4";
 import Fish6 from "./models/trashmodels/Fish6";
 import Fish7 from "./models/trashmodels/Fish7";
+import Postprocessing from "../acidification/postprocessing/Postprocessing";
 
 const InteractiveTrash = ({
   TrashModel,
@@ -296,6 +297,7 @@ const EarthScene = () => {
           makeDefault
         />
         <Environment files="./hdr/UNDERWATER.hdr" background />
+        <Postprocessing/>
       </Canvas>
     </div>
   );

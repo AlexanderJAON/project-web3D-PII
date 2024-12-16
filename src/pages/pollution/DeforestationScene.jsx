@@ -7,6 +7,7 @@ import SawMill from "./models/SawMill";
 import Masonry from "./models/Masonry";
 import Forest from "./models/Forest";
 import Tree from "./models/Tree";
+import Postprocessing from "../acidification/postprocessing/Postprocessing";
 
 const EarthScene = () => {
   const [topicIndex, setTopicIndex] = useState(0);
@@ -251,6 +252,7 @@ const EarthScene = () => {
         <Masonry position={[-40, 0, 40]} />
         <SawMill />
         <Masonry />
+        <Postprocessing/>
       </Canvas>
     </div>
   );

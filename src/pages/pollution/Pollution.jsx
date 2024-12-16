@@ -109,7 +109,7 @@ const EarthScene = ({ onExclamationClick }) => {
       <Pipe position={[140, 4, 106]} rotation={[0, Math.PI / 0.6, 0]} />
       <Liquid position={[146.1, -15, 120]} rotation={[0, Math.PI / 7, 0]} />
       <Liquid position={[147, 8, 138]} rotation={[Math.PI, Math.PI / 7, 0]} />
-      <Exclamation position={[145, 20, 115]} onClick={goToSpillScene} />
+      <Exclamation position={[145, 24, 115]} onClick={goToSpillScene} />
       <Tree position={[10, 0, -100]} />
       <Tree position={[25, 1, -110]} />
       <Tree position={[16, 2, -112]} />
@@ -121,7 +121,7 @@ const EarthScene = ({ onExclamationClick }) => {
       <YouTubeScreen videoUrl={videoUrl} onTogglePlayPause={toggleControls} />
 
       <FirstPersonControls
-        movementSpeed={12}
+        movementSpeed={30}
         lookSpeed={0.1}
         lookVertical={true}
         position={[0, 200, 100]}
@@ -137,7 +137,7 @@ const EarthScene = ({ onExclamationClick }) => {
         <meshStandardMaterial color="black" />
       </Text3D>
 
-      {/* Ambiente HDR */}
+      
       <Environment files="./hdr/sky3.hdr" background />
       <Postprocessing/>
     </Canvas>
@@ -156,7 +156,7 @@ const Pollution = () => {
 
     return () => {
       audio.pause();
-      audio.currentTime = 0; // Resets the audio if needed
+      audio.currentTime = 0; 
     };
   }, []);
 

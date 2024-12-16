@@ -16,6 +16,7 @@ import Fish3 from "./models/trashmodels/Fish3";
 import Fish4 from "./models/trashmodels/Fish4";
 import Fish6 from "./models/trashmodels/Fish6";
 import Fish7 from "./models/trashmodels/Fish7";
+import Postprocessing from "../acidification/postprocessing/Postprocessing";
 
 const InteractiveTrash = ({
   TrashModel,
@@ -176,17 +177,20 @@ const EarthScene = () => {
       hdrTexture.magFilter = THREE.LinearFilter;
       hdrTexture.minFilter = THREE.LinearFilter;
 
-      hdrTexture.onUpdate = () => {
-        const colorFilter = new THREE.Color(0.5, 1, 0.5); // Verde
-        for (let i = 0; i < hdrTexture.image.data.length; i += 4) {
-          hdrTexture.image.data[i] *= colorFilter.r; // Rojo
-          hdrTexture.image.data[i + 1] *= colorFilter.g; // Verde
-          hdrTexture.image.data[i + 2] *= colorFilter.b; // Azul
-        }
-      };
+      // Modificar los datos de la textura directamente
+      const colorFilter = new THREE.Color(0.5, 1, 0.5); // Verde
+      const data = hdrTexture.image.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] *= colorFilter.r; // Rojo
+        data[i + 1] *= colorFilter.g; // Verde
+        data[i + 2] *= colorFilter.b; // Azul
+      }
+
+      // Forzar la actualización de la textura
+      hdrTexture.needsUpdate = true;
     }
   }, [hdrTexture]);
-
   useEffect(() => {
     const generatedTrash = generateTrash(trashComponents, trashCount);
     setTrashElements(generatedTrash);
@@ -208,16 +212,15 @@ const EarthScene = () => {
   };
 
   useEffect(() => {
-        const audio = new Audio("./sounds/ca1.mp3");
-        audio.loop = true;
-        audio.play();
-    
-        return () => {
-          audio.pause();
-          audio.currentTime = 0;
-        };
-      }, []);
+    const audio = new Audio("./sounds/ca1.mp3");
+    audio.loop = true;
+    audio.play();
 
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
 
   return (
     <div style={{ position: "relative", height: "100vh" }}>
@@ -317,6 +320,7 @@ const EarthScene = () => {
           makeDefault
         />
         {hdrTexture && <Environment background map={hdrTexture} />}
+        <Postprocessing/>
       </Canvas>
     </div>
   );
