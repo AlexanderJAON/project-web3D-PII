@@ -1,21 +1,18 @@
-import React, { useEffect, useRef,useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { Vector3 } from 'three';
-import { RigidBody } from '@react-three/rapier';
 
-const Fish = (props) => {
+const Fish = ({ onClick, ...props }) => {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF('models-3d/fish.glb');
   const { actions } = useAnimations(animations, group);
-  const direction = useRef(new Vector3(0.02, 0, 0)); 
-  const initialRotation = [0, Math.PI / 2, 0]; 
-  
- 
+  const direction = useRef(new Vector3(0.02, 0, 0));
+  const initialRotation = [0, Math.PI / 2, 0];
 
   useEffect(() => {
     if (actions) {
-      const action = actions[Object.keys(actions)[0]]; 
+      const action = actions[Object.keys(actions)[0]];
       if (action) {
         action.play();
       }
@@ -24,37 +21,32 @@ const Fish = (props) => {
 
   useFrame(() => {
     group.current.position.add(direction.current);
-  
+
     const xLimit = 8;
     const zLimit = 8;
-  
-    
-    if (Math.random() < 0.01) { 
-      direction.current.x = (Math.random() - 0.5) * 0.04; 
+
+    if (Math.random() < 0.01) {
+      direction.current.x = (Math.random() - 0.5) * 0.04;
     }
-    if (Math.random() < 0.01) { 
-      direction.current.z = (Math.random() - 0.5) * 0.04; 
+    if (Math.random() < 0.01) {
+      direction.current.z = (Math.random() - 0.5) * 0.04;
     }
-  
+
     if (group.current.position.x > xLimit || group.current.position.x < -xLimit) {
-      direction.current.x = -direction.current.x; 
-      group.current.rotation.y += Math.PI; 
+      direction.current.x = -direction.current.x;
+      group.current.rotation.y += Math.PI;
     }
-  
-    
+
     if (group.current.position.z > zLimit || group.current.position.z < -zLimit) {
-      direction.current.z = -direction.current.z; 
-      group.current.rotation.y += Math.PI; 
+      direction.current.z = -direction.current.z;
+      group.current.rotation.y += Math.PI;
     }
-  
 
     group.current.rotation.y += (Math.sin(group.current.position.x * 0.1) + Math.sin(group.current.position.z * 0.1)) * 0.001;
   });
-  
-  
 
   return (
-    <group ref={group} {...props} dispose={null} rotation={initialRotation}>
+    <group ref={group} {...props} dispose={null} rotation={initialRotation} onClick={onClick}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group name="EmperorAngelfish_FBXfbx" rotation={[Math.PI / 2, Math.PI / 2, 0]} scale={0.03}>
@@ -99,17 +91,6 @@ const Fish = (props) => {
                       material={materials.mt_EmperorAngelfish}
                       skeleton={nodes.Object_17.skeleton}
                     />
-                    <group name="Object_8" />
-                    <group name="Object_10" />
-                    <group name="Object_12" />
-                    <group name="Object_14" />
-                    <group name="Object_16" />
-                    <group name="EmperorAngelfish6" />
-                    <group name="EmperorAngelfish5" />
-                    <group name="EmperorAngelfish4" />
-                    <group name="EmperorAngelfish3" />
-                    <group name="EmperorAngelfish2" />
-                    <group name="EmperorAngelfish1" />
                   </group>
                 </group>
               </group>
@@ -123,4 +104,4 @@ const Fish = (props) => {
 
 useGLTF.preload('models-3d/fish.glb');
 
-export default Fish; 
+export default Fish;
