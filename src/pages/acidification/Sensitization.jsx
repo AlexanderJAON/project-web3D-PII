@@ -10,6 +10,9 @@ import { Physics, RigidBody } from '@react-three/rapier';
 import Alga from './models/Alga';
 import Fish2 from './models/Fish2';
 import Dolphin from './models/Dolphin';
+import VideoModal from './VideoModal';
+import Postprocessing from './postprocessing/Postprocessing';
+
 
 const Modal = ({ onClose }) => (
   <div
@@ -71,15 +74,25 @@ const Modal = ({ onClose }) => (
 );
 
 
+
+
 const EarthScene = ({ cameraPosition }) => {
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  const handleFishClick = () => {
+    setShowVideoModal(true);
+  };
   return (
+    <div style={{ height: '100vh', position: 'relative' }}>
+      {showVideoModal && <VideoModal onClose={() => setShowVideoModal(false)} />}
       <Canvas
         shadows
+        
         camera={{ position: [0, 2, 12], fov: 45 }}
         style={{
           width: '100vw',
           height: '100vh',
-          position: 'absolute',
+          position: 'fixed',
           top: 0,
           left: 0,
         }}
@@ -89,13 +102,13 @@ const EarthScene = ({ cameraPosition }) => {
           <RotatingCamera cameraPosition={cameraPosition} />
           <directionalLight
             castShadow
-            intensity={2}
+            intensity={1}
             position={[0, 10, 0]}
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
           />
           <ambientLight />
-          <Fish  />
+          <Fish  onClick={handleFishClick}/>
           <OrbitControls enablePan={false} enableZoom={false} enableRotate={false} />
           <Environment files="./hdr/UnderWater_A_4k.hdr" background />
           <Alga />
@@ -103,7 +116,9 @@ const EarthScene = ({ cameraPosition }) => {
           <Stones/>
           <Dolphin/>
         </Physics>
+        <Postprocessing/>
       </Canvas>
+      </div>
     );
     
 };
