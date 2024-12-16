@@ -1,8 +1,8 @@
 import { Canvas } from "@react-three/fiber";
 import Desert from "./models/Desert";
-import { Html, KeyboardControls, OrbitControls, Text } from "@react-three/drei";
+import { Html, KeyboardControls, OrbitControls, PositionalAudio, Text } from "@react-three/drei";
 import Lizard from "./models/Lizard";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./Awareness.css";
 import WelcomeText from "./WelcomeText";
 import { Physics } from "@react-three/rapier";
@@ -10,6 +10,8 @@ import Staging from "./staging/Staging";
 import SheriffCactus from "./models/SheriffCactus";
 import HappyCactus from "./models/HappyCactus";
 import WaterTap from "./models/WaterTap";
+import Video from "./Video";
+
 
 const EarthSceneAwa = () => {
   const [hovered, setHovered] = useState(false);
@@ -17,9 +19,20 @@ const EarthSceneAwa = () => {
     happyCactus: "Te voy a presentar uno de los proyectos",
     sheriffCactus: "hello", 
     waterTap: "mailove",
+
   };
+  const audioRef = useRef();  
+
+  const handleAudio = useCallback(()=>{
+    audioRef.current.play();
+    audioRef.current.setVolume(40);
+  },[]);
+
+  
+
   return (
     <Canvas
+      onClick={handleAudio}
       shadows
       camera={{ position: [1, 40, 80], fov: 45 }}
       style={{ width: "100vw", height: "100vh" }}
@@ -34,7 +47,7 @@ const EarthSceneAwa = () => {
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <WelcomeText/>
-      <Physics debug>
+      <Physics>
       <Desert position={[-18.4, 0, 9]} rotation={[-0.2, 1.6, 0]} recieveShadows/>
       <Lizard castShadow position={[-18.4, 10, 7]} />
       <SheriffCactus position={[-37, 17, 30]} onPointerOver={() => setHovered("sheriffCactus")}
@@ -62,7 +75,10 @@ const EarthSceneAwa = () => {
           )} 
       <Staging/>
       </Physics>
-      
+      <Video name= "river" position-y={10} scale={8}/> 
+      <group position={[0, 5, 0]}>
+          <PositionalAudio autoplay ref={audioRef} loop url="/sounds/wind.mp3" distance={5}/>
+      </group>
       <OrbitControls/>
     </Canvas>
   );
