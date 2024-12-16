@@ -6,9 +6,9 @@ const WelcomeText = ()=>{
         center
         distanceFactor={30}
         transform
-        position={[-1, 8, 0]}
+        position={[0.3, 18, 0]}
         >
-            <h1> Bienvenido </h1>
+            <h1>  La escasez </h1>
         </Html>
     );
 };
