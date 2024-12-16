@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, FirstPersonControls, OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import Oil from "./models/Oil"; // Modelo 3D de ejemplo
 import Coral from "../home/models/Coral"; // Otro modelo de ejemplo
@@ -15,7 +15,10 @@ const Quiz = () => {
   const [previousScore, setPreviousScore] = useState(null); // Puntaje anterior del jugador
   const [questionIndex, setQuestionIndex] = useState(0); // Índice de pregunta actual
   const [answeredQuestions, setAnsweredQuestions] = useState([]); // Seguimiento de preguntas respondidas
+  const [message, setMessage] = useState(null); // Mensaje para el recuadro
   const { user, observeAuthState } = useAuthStore(); // Estado del usuario logueado
+
+  const [removedModels, setRemovedModels] = useState([]); // Lista para modelos eliminados
 
   const quizData = [
     {
@@ -37,7 +40,6 @@ const Quiz = () => {
     // Agrega más preguntas y modelos aquí
   ];
 
-  // Obtener estado de autenticación y cargar puntaje anterior
   useEffect(() => {
     observeAuthState();
 
@@ -54,7 +56,6 @@ const Quiz = () => {
     fetchPreviousScore();
   }, [user]);
 
-  // Actualizar puntaje en Firestore
   const updateScore = async () => {
     if (user) {
       const userDoc = await UserDAO.getUserById(user.uid);
@@ -78,32 +79,34 @@ const Quiz = () => {
 
   const handleAnswer = (isCorrect) => {
     if (answeredQuestions.includes(questionIndex)) {
-      alert("Ya respondiste esta pregunta.");
+      setMessage("Ya respondiste esta pregunta.");
       return;
     }
 
     if (isCorrect) {
       setScore((prev) => prev + 1);
-      alert("¡Respuesta correcta!");
+      setMessage("¡Respuesta correcta, Eliminaste un contaminante!");
+      setRemovedModels((prev) => [...prev, quizData[questionIndex].model]); // Eliminar modelo si es correcto
     } else {
       setScore((prev) => Math.max(0, prev - 1)); // No permite puntajes negativos
-      alert("Respuesta incorrecta. Pasando a la siguiente pregunta...");
+      setMessage("Respuesta incorrecta");
     }
 
     setAnsweredQuestions((prev) => [...prev, questionIndex]); // Marcar como respondida
     setQuestionIndex((prev) => prev + 1); // Avanzar a la siguiente pregunta
   };
 
-    useEffect(() => {
-        const audio = new Audio("./sounds/cq1.mp3");
-        audio.loop = true;
-        audio.play();
-    
-        return () => {
-          audio.pause();
-          audio.currentTime = 0; // Resets the audio if needed
-        };
-      }, []);
+  useEffect(() => {
+      const audio = new Audio("./sounds/cq1.mp3");
+      audio.loop = true;
+      audio.play();
+      audio.volume=0.2;
+  
+      return () => {
+        audio.pause();
+        audio.currentTime = 0; // Resets the audio if needed
+      };
+    }, []);
 
   return (
     <>
@@ -121,17 +124,12 @@ const Quiz = () => {
           shadow-mapSize-height={1024}
         />
         <Physics>
-          {/* Renderizar modelo correspondiente */}
-          {quizData[questionIndex]?.model === "Oil" && (
-            <Oil position={[-200, 40, 30]} />
-          )}
-          {quizData[questionIndex]?.model === "Coral" && (
-            <Coral position={[-100, 30, 50]} />
-          )}
+          {!removedModels.includes("Oil") && <Oil position={[-200, 40, 30]} />}
+          {!removedModels.includes("Coral") && <Coral position={[-100, 30, 50]} />}
           <IsleQuiz />
         </Physics>
         <Environment files="./hdr/sky3.hdr" background />
-        <OrbitControls/>
+        <OrbitControls />
       </Canvas>
 
       {/* Ventana del Quiz */}
@@ -139,7 +137,7 @@ const Quiz = () => {
         <div
           style={{
             position: "absolute",
-            top: "10%",
+            top: "60%",
             left: "50%",
             transform: "translateX(-50%)",
             background: "white",
@@ -167,6 +165,40 @@ const Quiz = () => {
               {option.text}
             </button>
           ))}
+        </div>
+      )}
+
+      {/* Recuadro para mensajes */}
+      {message && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "50%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "rgba(0, 0, 0, 0.8)",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            textAlign: "center",
+            zIndex: 10,
+          }}
+        >
+          <p>{message}</p>
+          <button
+            onClick={() => setMessage(null)}
+            style={{
+              marginTop: "10px",
+              padding: "5px 10px",
+              background: "#FF5722",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Cerrar
+          </button>
         </div>
       )}
 
