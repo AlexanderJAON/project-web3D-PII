@@ -1,17 +1,21 @@
 import React from "react";
-import { EffectComposer, Fog } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, DepthOfField, Noise, Vignette } from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 import { Color } from "three";
+import { RenderPass } from "postprocessing";
 
-const PostProcessing = () => {
+
+const Postprocessing = () => {
   return (
     <EffectComposer>
-      <Fog 
-        color={new Color(0x4d648d)} 
-        near={10} 
-        far={100} 
-      />
+ 
+
+<Bloom intensity={0.1} luminanceThreshold={0.1} luminanceSmoothing={0.9} />
+
+
+
     </EffectComposer>
   );
 };
 
-export default PostProcessing;
+export default Postprocessing;
