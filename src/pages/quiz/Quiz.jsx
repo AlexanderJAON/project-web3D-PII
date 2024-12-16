@@ -9,6 +9,8 @@ import UserDAO from "../../daos/UserDAO";
 import useAuthStore from "../../stores/use-auth-store";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase.config";
+import GarbageBag from "./models/GarbageBag";
+import ToxicBarrel from "./models/ToxicBarrel";
 
 const Quiz = () => {
   const [score, setScore] = useState(0); // Puntaje del jugador
@@ -37,6 +39,24 @@ const Quiz = () => {
         { text: "Blanqueamiento por cambio climático", correct: true },
       ],
     },
+    {
+      model: "GarbageBag",
+      question: "¿Cúal es una de las principales causas de contaminación?",
+      options: [
+        { text: "Manejo inadecuado de residuos", correct: true },
+        { text: "Uso desmesurado del agua", correct: false },
+      ],
+    },
+    {
+      model: "ToxicBarrel",
+      question: "¿Qué es la acidificación de los océanos?",
+      options: [
+        { text: "El aumento de la temperatura de los océanos.", correct: false },
+        { text: "La disminución del pH en el agua del mar debido a la absorción de CO₂.", correct: true },
+        { text: "La reducción de la salinidad en los océanos.", correct: false },
+      ],
+    },
+
     // Agrega más preguntas y modelos aquí
   ];
 
@@ -126,6 +146,9 @@ const Quiz = () => {
         <Physics>
           {!removedModels.includes("Oil") && <Oil position={[-200, 40, 30]} />}
           {!removedModels.includes("Coral") && <Coral position={[-100, 30, 50]} />}
+          {!removedModels.includes("GarbageBag") && <GarbageBag position={[-120, 25, 30]}/>}
+          {!removedModels.includes("ToxicBarrel") && <ToxicBarrel position={[-150, 20, 100]}/>}
+
           <IsleQuiz />
         </Physics>
         <Environment files="./hdr/sky3.hdr" background />
